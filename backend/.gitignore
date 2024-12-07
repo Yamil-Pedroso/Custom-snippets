@@ -1,0 +1,44 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+
+# Logs
+logs
+*.log
+logs/*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# TypeScript
+dist/
+*.tsbuildinfo
+
+# IDE/Editor files
+.idea/
+.vscode/
+*.swp
+
+# Debugger files
+debug/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Build files
+build/
+coverage/
+
+# MongoDB
+dump/
+data/
+
+# Others
+*.local
