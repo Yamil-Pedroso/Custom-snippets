@@ -1,25 +1,65 @@
 import { Request, Response } from "express";
 import { Component } from "../models/Component";
-import { sampleComponents } from "../data/components";
+//import { sampleComponents } from "../data/components";
+
+interface UserRequest extends Request {
+    user?: any;
+}
 
 export const getComponents = async (req: Request, res: Response) => {
     try {
         const components = await Component.find();
-        res.status(200).json(sampleComponents);
+        res.status(200).json(components);
     } catch (error) {
         res.status(500).json({ message: "Error retrieving components", error });
     }
 };
 
+export const getSingleComponent = async (req: Request, res: Response) => {
+    const { id } = req.params;
 
-export const createComponent = async (req: Request, res: Response) => {
-  try {
-      const newComponent = new Component(req.body);
-      const savedComponent = await newComponent.save();
-      res.status(201).json(savedComponent);
-  } catch (error) {
-      res.status(400).json({ message: "Error creating component", error });
-  }
+    try {
+        const component = await Component.findById(id);
+
+        if (!component) {
+            res.status(404).json({ message: "Component not found" });
+            return;
+        }
+
+        res.status(200).json(component);
+    } catch (error) {
+        res.status(500).json({ message: "Error retrieving component", error });
+    }
+
+}
+
+export const getUserComponents = async (req: UserRequest, res: Response) => {
+    try {
+        const components = await Component.find({ userId: req.user?.id });
+        res.status(200).json(components);
+    } catch (error) {
+        res.status(500).json({ message: "Error retrieving components", error });
+    }
+}
+
+
+export const createComponent = async (req: UserRequest, res: Response): Promise<void> => {
+    const { name, description, codeSnippet, tags } = req.body;
+
+    try {
+        const newComponent = new Component({
+            name,
+            description,
+            codeSnippet,
+            tags,
+            userId: req.user?.id, 
+        });
+
+        const savedComponent = await newComponent.save();
+        res.status(201).json(savedComponent);
+    } catch (error) {
+        res.status(400).json({ message: "Error creating component", error });
+    }
 };
 
 export const updateComponent = async (req: Request, res: Response): Promise<void> => {

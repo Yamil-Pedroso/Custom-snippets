@@ -30,3 +30,32 @@ export const createComponent = async (component: Omit<IComponent, "id" | "create
         throw error;
     }
 };
+
+export const getComponentById = async (id: string): Promise<IComponent> => {
+    try {
+        const response = await axios.get<IComponent>(`${API_URL}/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching component:", error);
+        throw error;
+    }
+}
+
+export const updateComponent = async (id: string, component: Partial<IComponent>): Promise<IComponent> => {
+    try {
+        const response = await axios.put<IComponent>(`${API_URL}/${id}`, component);
+        return response.data;
+    } catch (error) {
+        console.error("Error updating component:", error);
+        throw error;
+    }
+}
+
+export const deleteComponent = async (id: string): Promise<void> => {
+    try {
+        await axios.delete(`${API_URL}/${id}`);
+    } catch (error) {
+        console.error("Error deleting component:", error);
+        throw error;
+    }
+}
