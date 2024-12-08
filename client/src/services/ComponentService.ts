@@ -59,3 +59,13 @@ export const deleteComponent = async (id: string): Promise<void> => {
         throw error;
     }
 }
+
+export const searchComponents = async (query: string): Promise<IComponent[]> => {
+    try {
+        const response = await axios.get<IComponent[]>(`${API_URL}/search?q=${query}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error searching components:", error);
+        throw error;
+    }
+}
