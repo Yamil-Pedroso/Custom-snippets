@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken";
 
 export const registerUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { username, email, password } = req.body;
+        const { username, email, password, isAdmin } = req.body;
 
         if (!username || !email || !password) {
             throw new CustomError('Please fill in all fields', 400);
@@ -22,6 +22,7 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
             username,
             email,
             password,
+            isAdmin: isAdmin ?? false, // Si no se proporciona un valor, se establece en `false`
         });
 
         user = await User.create(user);
@@ -120,38 +121,51 @@ export const logoutUser = async (req: Request, res: Response, next: NextFunction
 //};
 
 // Actualizar información del usuario
-export const updateUser = async (req: any, res: any, next: NextFunction) => {
+export const updateUser = async (req: any, res: any): Promise<void> => {
     const { id } = req.params;
-    const { username, email, password } = req.body;
+    const { isAdmin, ...updates } = req.body;
 
     try {
-        const user = await User.findById(id);
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
+        // Verificar si el usuario está actualizando su propio perfil
+        if (req.user.id !== id) {
+            return res.status(403).json({ message: "Access denied, you can only update your own account" });
         }
 
-        // Encriptar contraseña
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
+        // Asegurar que `isAdmin` no se pueda modificar
+        if (isAdmin !== undefined) {
+            return res.status(403).json({ message: "Cannot update admin status" });
+        }
 
-        const updatedUser = await User.findByIdAndUpdate(id, {
-            username,
-            email,
-            password: hashedPassword,
-        }, { new: true });
+        // Actualizar el usuario
+        const updatedUser = await User.findByIdAndUpdate(
+            id,
+            updates,
+            { new: true, runValidators: true }
+        );
 
-        return cookieToken(updatedUser, res);
+        if (!updatedUser) {
+            res.status(404).json({ message: "User not found" });
+            return;
+        }
+
+        res.status(200).json(updatedUser);
     } catch (error) {
-        return next(new CustomError("Error updating user", 500));
+        res.status(500).json({ message: "Error updating user", error });
     }
 };
 
-export const getUsers = async (_req: Request, res: Response, next: NextFunction) => {
+export const getUsers = async (req: any, res: any): Promise<void> => {
     try {
-        const users = await User.find();
-        res.status(200).json({ users });
+        // Verificar si el usuario es administrador
+        if (!req.user.isAdmin) {
+            return res.status(403).json({ message: "Access denied, admin only" });
+        }
+
+        // Obtener todos los usuarios
+        const users = await User.find().select("-password"); // Excluye las contraseñas
+        res.status(200).json(users);
     } catch (error) {
-        next(new CustomError("Error getting users", 500));
+        res.status(500).json({ message: "Error retrieving users", error });
     }
 };
 
@@ -160,12 +174,19 @@ export const deleteUser = async (req: any, res: any, next: NextFunction) => {
     const { id } = req.params;
 
     try {
-        const user = await User.findByIdAndDelete(id);
-        if (!user) {
+        // Verificar si el usuario es administrador
+        if (!req.user.isAdmin) {
+            return res.status(403).json({ message: "Access denied, admin only" });
+        }
+
+        // Eliminar al usuario
+        const deletedUser = await User.findByIdAndDelete(id);
+
+        if (!deletedUser) {
             return res.status(404).json({ message: "User not found" });
         }
 
-        res.status(200).json({ message: "User deleted" });
+        res.status(200).json({ message: "User deleted successfully", user: deletedUser });
     } catch (error) {
         next(new CustomError("Error deleting user", 500));
     }

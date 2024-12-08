@@ -7,7 +7,7 @@ import {
     getUsers,
     deleteUser,
 } from "../controllers/authController";
-import { protect } from "../middlewares/authMiddleware";
+import { protect, admin } from "../middlewares/authMiddleware";
 
 const router = Router();
 
@@ -15,7 +15,9 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.post("/logout", logoutUser);
 router.put("/:id", protect, updateUser);
-router.get("/", getUsers); 
-router.delete("/:id", protect, deleteUser);
+
+// Rutas accesibles solo para administradores
+router.get("/", protect, admin, getUsers); // Solo para administradores
+router.delete("/:id", protect, admin, deleteUser); // Solo para administradores
 
 export default router;

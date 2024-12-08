@@ -1,5 +1,6 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { Component } from "../models/Component";
+import { body, validationResult } from "express-validator";
 //import { sampleComponents } from "../data/components";
 
 interface UserRequest extends Request {
@@ -15,11 +16,11 @@ export const getComponents = async (req: Request, res: Response) => {
     }
 };
 
-export const getSingleComponent = async (req: Request, res: Response) => {
+export const getSingleComponent = async (req: UserRequest, res: Response) => {
     const { id } = req.params;
 
     try {
-        const component = await Component.findById(id);
+        const component = await Component.findOne({ _id: id, userId: req.user?.id });
 
         if (!component) {
             res.status(404).json({ message: "Component not found" });
@@ -62,11 +63,28 @@ export const createComponent = async (req: UserRequest, res: Response): Promise<
     }
 };
 
+export const validateCreateComponent = [
+    body("name").notEmpty().withMessage("Name is required"),
+    body("codeSnippet").notEmpty().withMessage("Code snippet is required"),
+    body("tags").isArray().withMessage("Tags must be an array"),
+    (req: Request, res: Response, next: NextFunction) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        next();
+    },
+];
+
 export const updateComponent = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
 
     try {
-        const updatedComponent = await Component.findByIdAndUpdate(id, req.body, { new: true });
+        const updatedComponent = await Component.findOneAndUpdate(
+            { _id: id, userId: req.user?.id }, // Solo actualizar si el componente pertenece al usuario
+            req.body, // Actualizar con los datos del cuerpo de la solicitud
+            { new: true } // Devolver el componente actualizado
+        );
 
         if (!updatedComponent) {
             res.status(404).json({ message: "Component not found" });
@@ -83,10 +101,12 @@ export const deleteComponent = async (req: Request, res: Response): Promise<void
     const { id } = req.params;
 
     try {
-        const deletedComponent = await Component.findByIdAndDelete(id);
+        const deletedComponent = await Component.findOneAndDelete(
+            { _id: id, userId: req.user?.id }
+        );
 
         if (!deletedComponent) {
-            res.status(404).json({ message: "Component not found" });
+            res.status(404).json({ message: "Component not found or not authorized" });
             return;
         }
 
@@ -97,8 +117,17 @@ export const deleteComponent = async (req: Request, res: Response): Promise<void
 };
 
 
-export const searchComponents = async (req: Request, res: Response) => {
-  const { query } = req.query;
-  const components = await Component.find({ $text: { $search: query as string } });
-  res.json(components);
+export const searchComponents = async (req: UserRequest, res: Response) => {
+    const { query } = req.query;
+
+    try {
+        const components = await Component.find({
+            userId: req.user?.id, // Filtrar solo los componentes del usuario
+            $text: { $search: query as string },
+        });
+
+        res.status(200).json(components);
+    } catch (error) {
+        res.status(500).json({ message: "Error searching components", error });
+    }
 };

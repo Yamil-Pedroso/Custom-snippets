@@ -35,6 +35,11 @@ ComponentSchema.set("toJSON", {
     }
 });
 
+ComponentSchema.index(
+    { name: "text", description: "text", tags: "text" },
+    { weights: { name: 5, description: 2, tags: 1 } }
+);
+
 const Component = model<IComponent>("Component", ComponentSchema);
 
 export { Component };
