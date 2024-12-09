@@ -9,6 +9,7 @@ interface IUser {
   password: string;
   avatar?: string;
   isAdmin: boolean;
+  active: boolean;
 }
 
 // Interfaz para los métodos del documento de Mongoose
@@ -27,6 +28,7 @@ const userSchema = new Schema<IUserDocument>(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     isAdmin: { type: Boolean, default: false },
+    active: { type: Boolean, default: false},
     avatar: { type: String },
   },
   { timestamps: true }

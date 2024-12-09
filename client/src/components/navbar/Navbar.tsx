@@ -1,107 +1,97 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-//import { useComponentContext } from '../../context/componentContext';
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useUserContext } from "../../context/userContext";
+import { logoutUser } from "../../services/UserService";
 
-interface INavbarProps {
-  isLogged?: boolean;
-}
+const Navbar: React.FC = () => {
+  const { currentUser, setCurrentUser } = useUserContext(); // Obtenemos el usuario actual del contexto
+  const navigate = useNavigate();
 
-const Navbar: React.FC<INavbarProps> = () => {
-  const [simulateAuthUser, setSimulateAuthUser] = useState(false);
-  //let { isSimulateAuthUser } = useComponentContext();
+  const isAuthenticated = currentUser !== null;
 
-  const handleLogout = () => {
-    setSimulateAuthUser(false);
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+      localStorage.removeItem("authToken"); // Eliminar token del localStorage
+      setCurrentUser(null); // Limpiar el contexto del usuario
+      navigate("/login"); // Redirigir al login
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
   };
 
   return (
-    <div>
-      {simulateAuthUser ? (
+    <nav
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "1rem 2rem",
+        backgroundColor: "#333",
+        color: "#fff",
+      }}
+    >
+      <h1>
+        <Link to="/" style={{ color: "#fff", textDecoration: "none" }}>
+          Snippet App
+        </Link>
+      </h1>
+
+      {isAuthenticated ? (
         <div
           style={{
             display: "flex",
-            justifyContent: "center",
             alignItems: "center",
-            flexDirection: "column",
-            marginTop: "3rem",
+            gap: "1.5rem",
           }}
         >
+          <h3>
+            {currentUser?.isAdmin ? "Admin" : "User"}: {currentUser?.username}
+          </h3>
+          <Link to="/profile" style={{ color: "#fff", textDecoration: "none" }}>
+            Profile
+          </Link>
+          <Link to="/dashboard" style={{ color: "#fff", textDecoration: "none" }}>
+            Dashboard
+          </Link>
+          {currentUser?.isAdmin && (
+            <Link
+              to="/user-management"
+              style={{ color: "#fff", textDecoration: "none" }}
+            >
+              Admin Panel
+            </Link>
+          )}
           <button
+            onClick={handleLogout}
             style={{
-              marginTop: "1rem",
+              backgroundColor: "#f00",
+              color: "#fff",
+              border: "none",
+              padding: "0.5rem 1rem",
               cursor: "pointer",
             }}
-            onClick={handleLogout}
           >
             Logout
           </button>
-          <ul
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              listStyleType: "none",
-              marginTop: "1rem",
-              gap: "1rem",
-              cursor: "pointer",
-            }}
-          >
-            <li>Profile</li>
-            <li>Dashboard</li>
-          </ul>
-
-          <h2
-            style={{
-              marginTop: "1rem",
-            }}
-          >
-            Welcome User
-          </h2>
         </div>
       ) : (
         <div
           style={{
             display: "flex",
-            justifyContent: "center",
             alignItems: "center",
-            flexDirection: "column",
-            marginTop: "3rem",
+            gap: "1.5rem",
           }}
         >
-          <h2>Welcome Guest</h2>
-          <div
-            style={{ display: "flex", justifyContent: "center" }}
-          >
-            <ul
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                listStyleType: "none",
-                marginTop: "1rem",
-                color: "#fff",
-                gap: "1rem",
-                cursor: "pointer",
-              }}
-            >
-              <Link to="/register">
-                <li
-                  style={{
-                    color: "#fff",
-                  }}
-                >
-                  Register</li>
-              </Link>
-              <Link to="/login">
-                <li
-                  style={{
-                    color: "#fff",
-                  }}
-                >Login</li>
-              </Link>
-            </ul>
-          </div>
+          <Link to="/register" style={{ color: "#fff", textDecoration: "none" }}>
+            Register
+          </Link>
+          <Link to="/login" style={{ color: "#fff", textDecoration: "none" }}>
+            Login
+          </Link>
         </div>
       )}
-    </div>
+    </nav>
   );
 };
 

@@ -36,7 +36,13 @@ app.use(
     }),
   )
 
-app.use(cors());
+  app.use(cors({
+    origin: process.env.CLIENT_URL,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+}));
+
 app.use(express.json());
 app.use("/api/v1/components", componentRoutes);
 app.use("/api/v1/auth", userRoutes);

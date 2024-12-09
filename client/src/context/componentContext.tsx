@@ -4,7 +4,6 @@ import { getComponents, IComponent } from "../services/ComponentService";
 interface ComponentContextProps {
   components: IComponent[];
   setComponents: React.Dispatch<React.SetStateAction<IComponent[]>>;
-  isSimulateAuthUser?: boolean;
 }
 
 const ComponentContext = createContext<ComponentContextProps | undefined>(
@@ -15,33 +14,29 @@ export const ComponentProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [components, setComponents] = useState<IComponent[]>([]);
-  const [isSimulateAuthUser, setIsSimulateAuthUser] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchComponents = async () => {
+      const token = localStorage.getItem("authToken");
+      if (!token) return; // No realizar la solicitud si no hay token
+  
       try {
         const data = await getComponents();
         setComponents(data);
       } catch (error) {
         console.error("Failed to fetch components:", error);
+        setError("Failed to fetch components");
       }
     };
+  
     fetchComponents();
   }, []);
-
-  useEffect(() => {
-    if (isSimulateAuthUser) {
-      console.log("User is authenticated");
-       setIsSimulateAuthUser(true);
-    } else {
-      console.log("User is not authenticated");
-    }
-  }
-  , [isSimulateAuthUser]);
+  
 
   return (
-    <ComponentContext.Provider value={{ components, setComponents, isSimulateAuthUser }}>
-      {children}
+    <ComponentContext.Provider value={{ components, setComponents }}>
+      {error ? <div>{error}</div> : children}
     </ComponentContext.Provider>
   );
 };

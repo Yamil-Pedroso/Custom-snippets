@@ -3,7 +3,11 @@ import { GlobalStyles } from "./styles/GlobalStyles";
 import { theme } from "./styles/theme";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ComponentProvider } from "./context/componentContext";
+import { UserProvider } from "./context/userContext";
+import ProtectedRoute from "./components/auth/protected-route/ProtectedRoute";
+import AdminRoute from "./components/auth/admin-route/AdminRoute";
 import HomePage from "./pages/HomePage";
+import UserManagementPage from "./pages/UserManagementPage";
 import Navbar from "./components/navbar/Navbar";
 import ComponentList from "./components/list-comp/ComponentList";
 import CreateSnippet from "./components/create-snippet/CreateSnippet";
@@ -15,28 +19,32 @@ import Profile from "./components/user/profile/Profile";
 import Dashboard from "./components/user/dashboard/Dashboard";
 
 const App: React.FC = () => {
-    return (
-        <ComponentProvider>
-            <ThemeProvider theme={theme}>
-            <GlobalStyles />
-            <Router>
+  return (
+    <ComponentProvider>
+      <UserProvider>
+        <ThemeProvider theme={theme}>
+          <GlobalStyles />
+          <Router>
             <Navbar />
-                <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/user-snippets" element={<ComponentList />} />
-                    <Route path="/create-snippet" element={<CreateSnippet />} />
-                    <Route path="/update-snippet/:id" element={<UpdateSnippet />} />
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/user-snippets" element={<ComponentList />} />
+              <Route path="/create-snippet" element={<ProtectedRoute><CreateSnippet /></ProtectedRoute>} />
+              <Route path="/update-snippet/:id" element={<ProtectedRoute><UpdateSnippet /></ProtectedRoute>} />
 
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
 
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
-                </Routes>
-            </Router>
-            </ThemeProvider>
-        </ComponentProvider>
-    );
+              <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+
+                <Route path="/user-management" element={<AdminRoute><UserManagementPage /></AdminRoute>} />
+            </Routes>
+          </Router>
+        </ThemeProvider>
+      </UserProvider>
+    </ComponentProvider>
+  );
 };
 
 export default App;

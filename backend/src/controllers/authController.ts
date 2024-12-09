@@ -48,6 +48,9 @@ export const loginUser = async (req: any, res: any, next: NextFunction) => {
             return res.status(400).json({ message: "Invalid credentials" });
         }
 
+        user.active = true;
+        await user.save();
+
        
         return cookieToken(user, res);
     } catch (error) {
@@ -55,15 +58,29 @@ export const loginUser = async (req: any, res: any, next: NextFunction) => {
     }
 };
 
+export const getCurrentUser = async (req: Request, res: Response) => {
+    const user = await User.findById(req.user.id).select("-password"); // No devolver la contraseña
+    res.status(200).json(user);
+  };
+  
+
 // Logout user
 export const logoutUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        //const user = await User.findById(req.user.id);
+        //if(user) {
+        //    user.active = false;
+        //    await user.save();
+        //}
+        
         res.cookie('token', null, {
             expires: new Date(Date.now() + 10 * 1000),
             httpOnly: true,
             secure: true,
             sameSite: 'none',
         });
+
+        
         res.status(200).json({ success: true, data: {} });
     } catch (error: any) {
         next(new CustomError(error.message, 500));

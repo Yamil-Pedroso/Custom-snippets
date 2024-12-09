@@ -1,18 +1,21 @@
-import axios from "axios";
+import axios from "../api/axiosConfig";
 
-const API_URL = "http://localhost:3010/api/v1/auth";
+const API_URL = "/auth";
 
 export interface IUser {
-    id: string;
+    _id: string;
+    username: string;
     email: string;
     password: string;
     isAdmin: boolean;
+    active: boolean;
     createdAt: string;
+    updatedAt?: string;
 }
 
 export const getUsers = async (): Promise<IUser[]> => {
     try {
-        const response = await axios.get<IUser[]>(API_URL);
+        const response = await axios.get<IUser[]>(`${API_URL}/users`);
         return response.data;
     } catch (error) {
         console.error("Error fetching users:", error);
@@ -30,15 +33,38 @@ export const registerUser = async ( user: Omit<IUser, "id" | "createdAt">): Prom
     }
 }
 
-export const loginUser = async (email: string, password: string): Promise<IUser> => {
+export const loginUser = async (
+    email: string,
+    password: string
+  ): Promise<{ token: string; user: IUser }> => {
     try {
-        const response = await axios.post<IUser>(`${API_URL}/login`, { email, password });
-        return response.data;
+      const response = await axios.post<{ token: string; user: IUser }>(
+        `${API_URL}/login`,
+        { email, password },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
     } catch (error) {
-        console.error("Error logging in:", error);
-        throw error;
+      console.error("Error logging in:", error);
+      throw error;
     }
-}
+  };
+  
+
+
+export const getCurrentUser = async (): Promise<IUser> => {
+    try {
+      const response = await axios.get<IUser>(`${API_URL}/me`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching current user:", error);
+      throw error;
+    }
+  };
 
 export const logoutUser = async (): Promise<void> => {
     try {
@@ -71,7 +97,7 @@ export const getUserById = async (id : string): Promise<IUser> => {
 
 export const deleteUser = async (id: string): Promise<void> => {
     try {
-        await axios.delete(`${API_URL}/${id}`);
+        await axios.delete(`${API_URL}/users/${id}`);
     } catch (error) {
         console.error("Error deleting user:", error);
         throw error;

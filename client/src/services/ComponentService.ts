@@ -1,6 +1,5 @@
-import axios from "axios"
-
-const API_URL = "http://localhost:3010/api/v1/components"
+import axios from "../api/axiosConfig";
+const API_URL = "/components"
 
 export interface IComponent {
     id: string;
@@ -13,7 +12,7 @@ export interface IComponent {
 
 export const getComponents = async (): Promise<IComponent[]> => {
     try {
-        const response = await axios.get<IComponent[]>(API_URL);
+        const response = await axios.get<IComponent[]>(`${API_URL}/all`);
         return response.data;
     } catch (error) {
         console.error("Error fetching components:", error);
