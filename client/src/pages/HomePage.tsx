@@ -1,5 +1,16 @@
 const HomePage = () => {
-  return <div>HomePage</div>;
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "90vh",
+      }}
+    >
+      HomePage
+    </div>
+  );
 };
 
 export default HomePage;

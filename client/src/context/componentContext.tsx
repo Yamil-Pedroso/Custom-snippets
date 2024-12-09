@@ -4,6 +4,7 @@ import { getComponents, IComponent } from "../services/ComponentService";
 interface ComponentContextProps {
   components: IComponent[];
   setComponents: React.Dispatch<React.SetStateAction<IComponent[]>>;
+  isSimulateAuthUser?: boolean;
 }
 
 const ComponentContext = createContext<ComponentContextProps | undefined>(
@@ -14,6 +15,7 @@ export const ComponentProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [components, setComponents] = useState<IComponent[]>([]);
+  const [isSimulateAuthUser, setIsSimulateAuthUser] = useState(true);
 
   useEffect(() => {
     const fetchComponents = async () => {
@@ -27,8 +29,18 @@ export const ComponentProvider: React.FC<{ children: ReactNode }> = ({
     fetchComponents();
   }, []);
 
+  useEffect(() => {
+    if (isSimulateAuthUser) {
+      console.log("User is authenticated");
+       setIsSimulateAuthUser(true);
+    } else {
+      console.log("User is not authenticated");
+    }
+  }
+  , [isSimulateAuthUser]);
+
   return (
-    <ComponentContext.Provider value={{ components, setComponents }}>
+    <ComponentContext.Provider value={{ components, setComponents, isSimulateAuthUser }}>
       {children}
     </ComponentContext.Provider>
   );

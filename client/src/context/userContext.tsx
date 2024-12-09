@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
-import { getUsers, IUser } from "../services/userService";
+import { getUsers, IUser } from "../services/UserService";
 
 interface UserContextProps {
   users: IUser[];
