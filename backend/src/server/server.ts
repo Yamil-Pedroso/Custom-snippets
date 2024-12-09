@@ -4,6 +4,7 @@ import path from "path";
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import cookieSession from 'cookie-session';
+import  { v2 as cloudinary } from 'cloudinary';
 import dotenv from "dotenv";
 import componentRoutes from "../routes/componentRoutes";
 import userRoutes from "../routes/userRoutes";
@@ -15,6 +16,14 @@ dotenv.config({
 
 const PORT = process.env.PORT || 8080;
 connectDB();
+
+// Cloudinary config
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
+
 
 const app = express();
 app.use(cookieParser());

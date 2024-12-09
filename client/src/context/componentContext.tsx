@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
-import { getComponents, IComponent } from "../services/ComponentService";
+import { getUserComponents, IComponent } from "../services/ComponentService";
 
 interface ComponentContextProps {
   components: IComponent[];
@@ -22,7 +22,7 @@ export const ComponentProvider: React.FC<{ children: ReactNode }> = ({
       if (!token) return; // No realizar la solicitud si no hay token
   
       try {
-        const data = await getComponents();
+        const data = await getUserComponents();
         setComponents(data);
       } catch (error) {
         console.error("Failed to fetch components:", error);

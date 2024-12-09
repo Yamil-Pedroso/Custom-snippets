@@ -10,6 +10,16 @@ export interface IComponent {
     createdAt: string;
 }
 
+export const getUserComponents = async (): Promise<IComponent[]> => { 
+    try {
+        const response = await axios.get<IComponent[]>(`${API_URL}/user-components`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching components:", error);
+        throw error;
+    }
+}
+
 export const getComponents = async (): Promise<IComponent[]> => {
     try {
         const response = await axios.get<IComponent[]>(`${API_URL}/all`);

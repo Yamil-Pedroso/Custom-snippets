@@ -2,6 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import { User, IUser } from "../models/User";
 import cookieToken from "../utils/cookieTokens";
 import CustomError from "../utils/customError";
+import { v2 as cloudinary } from 'cloudinary';
+import { UploadedFile } from 'express-fileupload';
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -18,11 +20,23 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
         if (user) {
             throw new CustomError('User already exists', 400);
         }
+
+        let myAvatar = 'https://res.cloudinary.com/ddgf7ijdc/image/upload/v1709338082/userAvatart/Avatars/ez5hjkxgtf0mcnjytx0c.jpg';
+        if (req.file) {
+
+            const result = await cloudinary.uploader.upload(req.file.path, {
+                folder: 'userAvatars/Avatars',
+            });
+            myAvatar = result.secure_url;
+        }
+
+
         user = new User ({
             username,
             email,
             password,
             isAdmin: isAdmin ?? false, // Si no se proporciona un valor, se establece en `false`
+            avatar: myAvatar,
         });
 
         user = await User.create(user);
@@ -120,22 +134,22 @@ export const logoutUser = async (req: Request, res: Response, next: NextFunction
 //    }
 //};
 
-// Actualizar avatar
-//export const updateAvatar = async (req: Request, res: Response) => {
-//    const { id } = req.params;
-//    const { avatar } = req.body;
-//
-//    try {
-//        const user = await User.findByIdAndUpdate(id, { avatar }, { new: true });
-//        if (!user) {
-//            return res.status(404).json({ message: "User not found" });
-//        }
-//
-//        res.status(200).json({ message: "Avatar updated", user });
-//    } catch (error) {
-//        res.status(500).json({ message: "Error updating avatar", error });
-//    }
-//};
+// Upload user avatar
+export const uploadAvatar = async (req: Request, res: Response, next: NextFunction) => {
+    const { path } = req.file as any
+  try {
+    let result = await cloudinary.uploader.upload(path, {
+      folder: 'userAvatart/Avatars',
+    });
+    res.status(200).json(result.secure_url)
+  } catch (error) {
+    res.status(500).json({
+      error,
+      message: 'Internal server error',
+    });
+  }
+};
+
 
 // Actualizar información del usuario
 export const updateUser = async (req: any, res: any): Promise<void> => {

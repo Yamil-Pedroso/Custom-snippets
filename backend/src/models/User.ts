@@ -29,7 +29,7 @@ const userSchema = new Schema<IUserDocument>(
     password: { type: String, required: true },
     isAdmin: { type: Boolean, default: false },
     active: { type: Boolean, default: false},
-    avatar: { type: String },
+    avatar: { type: String, default: "https://res.cloudinary.com/ddgf7ijdc/image/upload/v1709338082/userAvatart/Avatars/ez5hjkxgtf0mcnjytx0c.jpg" },
   },
   { timestamps: true }
 );
