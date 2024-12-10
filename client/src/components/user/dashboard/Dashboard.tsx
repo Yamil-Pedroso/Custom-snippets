@@ -23,10 +23,23 @@ const Dashboard: React.FC = () => {
   return (
     <DashboardContainer>
       <h1>Your Snippets</h1>
+      <Link 
+        style={{
+          display: "inline-block",
+          marginTop: "10px",
+          marginBottom: "20px",
+          padding: "5px 10px",
+          backgroundColor: "#333333",
+          color: "#fff",
+          border: "none",
+          borderRadius: "4px",
+          textDecoration: "none",
+          cursor: "pointer",
+        }}
+        to="/create-snippet">Create one</Link>
       {components.length === 0 ? (
         <>
           <p>No snippets found.</p>
-          <Link to="/create-snippet">Create one</Link>
         </>
       ) : (
         components.map((component) => (
