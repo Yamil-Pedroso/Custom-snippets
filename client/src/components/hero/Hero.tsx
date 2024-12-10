@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { HeroContainer, HeroContent, HeroLeft, HeroRight } from "./styles"
-import images from "../../assets"
+//import images from "../../assets"
 
 const Hero = () => {
     const navigate = useNavigate()
@@ -13,7 +13,13 @@ const Hero = () => {
         <button onClick={() => navigate("/register")}>Empieza Ahora</button>
         </HeroLeft>
         <HeroRight>
-          <h1>Start Now</h1>
+          <h1
+            style={{
+              
+              color: "#4b692a",
+          
+            }}
+          >Start Now</h1>
             
         </HeroRight>
       </HeroContent>

@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useUserContext } from "../../context/userContext";
 import { logoutUser } from "../../services/UserService";
+import { FaUser } from "react-icons/fa";
 
 const Navbar: React.FC = () => {
   const { currentUser, setCurrentUser } = useUserContext(); // Obtenemos el usuario actual del contexto
@@ -110,6 +111,7 @@ const Navbar: React.FC = () => {
             gap: "1.5rem",
           }}
         >
+          <FaUser size={24} />
           <Link
             to="/register"
             style={{ color: "#fff", textDecoration: "none" }}
