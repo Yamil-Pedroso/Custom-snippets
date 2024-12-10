@@ -8,6 +8,7 @@ export interface IUser {
     email: string;
     password: string;
     isAdmin: boolean;
+    avatar: string;
     active: boolean;
     createdAt: string;
     updatedAt?: string;
@@ -33,6 +34,8 @@ export const registerUser = async ( user: Omit<IUser, "id" | "createdAt">): Prom
     }
 }
 
+
+
 export const loginUser = async (
     email: string,
     password: string
@@ -53,7 +56,22 @@ export const loginUser = async (
       throw error;
     }
   };
-  
+
+  export const uploadAvatar = async (avatar: File): Promise<string> => {
+    try {
+      const formData = new FormData();
+      formData.append("avatar", avatar);
+      const response = await axios.post<string>(`${API_URL}/upload-avatar/`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error uploading avatar:", error);
+      throw error;
+    }
+  }
 
 
 export const getCurrentUser = async (): Promise<IUser> => {
@@ -103,9 +121,3 @@ export const deleteUser = async (id: string): Promise<void> => {
         throw error;
     }
 }
-
-
-
-
-
-

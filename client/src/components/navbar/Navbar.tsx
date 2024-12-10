@@ -1,11 +1,12 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useUserContext } from "../../context/userContext";
 import { logoutUser } from "../../services/UserService";
 
 const Navbar: React.FC = () => {
   const { currentUser, setCurrentUser } = useUserContext(); // Obtenemos el usuario actual del contexto
   const navigate = useNavigate();
+  const location = useLocation();
 
   const isAuthenticated = currentUser !== null;
 
@@ -19,6 +20,11 @@ const Navbar: React.FC = () => {
       console.error("Error logging out:", error);
     }
   };
+
+  const getLinkStyle = (path: string) => ({
+    color: location.pathname === path ? "yellow" : "#fff",
+    textDecoration: "none",
+  });
 
   return (
     <nav
@@ -45,19 +51,40 @@ const Navbar: React.FC = () => {
             gap: "1.5rem",
           }}
         >
+          <div
+            style={{
+              width: "40px",
+              height: "40px",
+              borderRadius: "50%",
+              overflow: "hidden",
+            }}
+          >
+            <img
+              src={currentUser?.avatar}
+              alt="User avatar"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
+            />
+          </div>
           <h3>
             {currentUser?.isAdmin ? "Admin" : "User"}: {currentUser?.username}
           </h3>
-          <Link to="/profile" style={{ color: "#fff", textDecoration: "none" }}>
+          <Link to="/profile" style={getLinkStyle("/profile")}>
             Profile
           </Link>
-          <Link to="/dashboard" style={{ color: "#fff", textDecoration: "none" }}>
+          <Link
+            to="/dashboard"
+            style={getLinkStyle("/dashboard")}
+          >
             Dashboard
           </Link>
           {currentUser?.isAdmin && (
             <Link
               to="/user-management"
-              style={{ color: "#fff", textDecoration: "none" }}
+              style={getLinkStyle("/user-management")}
             >
               Admin Panel
             </Link>
@@ -83,7 +110,10 @@ const Navbar: React.FC = () => {
             gap: "1.5rem",
           }}
         >
-          <Link to="/register" style={{ color: "#fff", textDecoration: "none" }}>
+          <Link
+            to="/register"
+            style={{ color: "#fff", textDecoration: "none" }}
+          >
             Register
           </Link>
           <Link to="/login" style={{ color: "#fff", textDecoration: "none" }}>

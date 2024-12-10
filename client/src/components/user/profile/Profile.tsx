@@ -6,6 +6,7 @@ import {
   UserInfo,
   SnippetList,
   SnippetCard,
+  AvatarWrapper,
 } from "./styles";
 
 const Profile: React.FC = () => {
@@ -18,15 +19,31 @@ const Profile: React.FC = () => {
 
   return (
     <ProfileContainer>
-      <UserInfo>
-        <h1>Welcome, {currentUser.username}!</h1>
-        <p>
-          <strong>Email:</strong> {currentUser.email}
-        </p>
-        <p>
-          <strong>Role:</strong> {currentUser.isAdmin ? "Admin" : "User"}
-        </p>
-      </UserInfo>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "2rem",
+        }}
+      >
+        <UserInfo>
+          <h1>Welcome, {currentUser.username}!</h1>
+          <p>
+            <strong>Email:</strong> {currentUser.email}
+          </p>
+          <p>
+            <strong>Role:</strong> {currentUser.isAdmin ? "Admin" : "User"}
+          </p>
+        </UserInfo>
+
+        <AvatarWrapper>
+          <img
+            src={currentUser?.avatar}
+            alt="User avatar"
+          />
+        </AvatarWrapper>
+      </div>
 
       <SnippetList>
         <h2>Your Snippets</h2>

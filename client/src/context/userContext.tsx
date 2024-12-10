@@ -19,6 +19,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
+  console.log("currentUser", currentUser);
+
   useEffect(() => {
     const fetchCurrentUser = async () => {
       const token = localStorage.getItem("authToken");
