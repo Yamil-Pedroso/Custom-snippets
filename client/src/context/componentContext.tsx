@@ -24,8 +24,8 @@ export const ComponentProvider: React.FC<{ children: ReactNode }> = ({
       try {
         const data = await getUserComponents();
         setComponents(data);
-      } catch (error) {
-        console.error("Failed to fetch components:", error);
+      } catch (err) {
+        console.error("Failed to fetch components:", err);
         setError("Failed to fetch components");
       }
     };

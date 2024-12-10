@@ -10,11 +10,13 @@ const UpdateSnippet: React.FC = () => {
     const [description, setDescription] = useState<string>("");
     const [codeSnippet, setCodeSnippet] = useState<string>("");
     const [tags, setTags] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
 
     // Cargar datos del snippet al montar el componente
     useEffect(() => {
         const fetchSnippet = async () => {
+            setLoading(true);
             if (id) {
                 try {
                     const snippet = await getComponentById(id);
@@ -24,12 +26,27 @@ const UpdateSnippet: React.FC = () => {
                     setTags(snippet.tags.join(", "));
                 } catch (error) {
                     console.error("Error fetching snippet:", error);
+                } finally {
+                    setLoading(false);
                 }
             }
         };
 
-        fetchSnippet();
+        if (id) fetchSnippet();
     }, [id]);
+
+    useEffect(() => {
+        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+          e.preventDefault();
+          // Esto es necesario para que algunos navegadores muestren un mensaje de advertencia
+          e.returnValue = ""; // Algunos navegadores requieren esta línea, aunque está "deprecated".
+        };
+      
+        window.addEventListener("beforeunload", handleBeforeUnload);
+        return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+      }, [name, description, codeSnippet, tags]);
+      
+      
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -60,52 +77,57 @@ const UpdateSnippet: React.FC = () => {
     return (
         <div style={styles.container}>
             <h1 style={styles.heading}>Update Snippet</h1>
-            <form onSubmit={handleSubmit} style={styles.form}>
-                <div style={styles.formGroup}>
-                    <label htmlFor="name" style={styles.label}>Name:</label>
-                    <input
-                        type="text"
-                        id="name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        style={styles.input}
-                        required
-                    />
-                </div>
-                <div style={styles.formGroup}>
-                    <label htmlFor="description" style={styles.label}>Description:</label>
-                    <textarea
-                        id="description"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        rows={3}
-                        style={styles.textarea}
-                    />
-                </div>
-                <div style={styles.formGroup}>
-                    <label htmlFor="codeSnippet" style={styles.label}>Code Snippet:</label>
-                    <textarea
-                        id="codeSnippet"
-                        value={codeSnippet}
-                        onChange={(e) => setCodeSnippet(e.target.value)}
-                        rows={10}
-                        style={styles.textarea}
-                        required
-                    />
-                </div>
-                <div style={styles.formGroup}>
-                    <label htmlFor="tags" style={styles.label}>Tags:</label>
-                    <input
-                        type="text"
-                        id="tags"
-                        value={tags}
-                        onChange={(e) => setTags(e.target.value)}
-                        style={styles.input}
-                        required
-                    />
-                </div>
-                <button type="submit" style={styles.button}>Update Snippet</button>
-            </form>
+            {loading ? <p>Loading...</p> :
+
+                <form onSubmit={handleSubmit} style={styles.form}>
+                    <div style={styles.formGroup}>
+                        <label htmlFor="name" style={styles.label}>Name:</label>
+                        <input
+                            type="text"
+                            id="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            style={styles.input}
+                            required
+                        />
+                    </div>
+                    <div style={styles.formGroup}>
+                        <label htmlFor="description" style={styles.label}>Description:</label>
+                        <textarea
+                            id="description"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            rows={3}
+                            style={styles.textarea}
+                        />
+                    </div>
+                    <div style={styles.formGroup}>
+                        <label htmlFor="codeSnippet" style={styles.label}>Code Snippet:</label>
+                        <textarea
+                            id="codeSnippet"
+                            value={codeSnippet}
+                            onChange={(e) => setCodeSnippet(e.target.value)}
+                            rows={10}
+                            style={styles.textarea}
+                            required
+                        />
+                    </div>
+                    <div style={styles.formGroup}>
+                        <label htmlFor="tags" style={styles.label}>Tags:</label>
+                        <input
+                            type="text"
+                            id="tags"
+                            value={tags}
+                            onChange={(e) => setTags(e.target.value)}
+                            style={styles.input}
+                            required
+                        />
+                    </div>
+                    <button type="submit" style={styles.button} disabled={loading}>
+                       {loading ? "Updating..." : "Update Snippet"}
+                    </button>
+                </form>
+            }
         </div>
     );
 };
@@ -113,7 +135,7 @@ const UpdateSnippet: React.FC = () => {
 const styles: Record<string, React.CSSProperties> = {
     container: {
         maxWidth: "600px",
-        margin: "0 auto",
+        margin: "2rem auto",
         padding: "20px",
         borderRadius: "8px",
         backgroundColor: "#f9f9f9",

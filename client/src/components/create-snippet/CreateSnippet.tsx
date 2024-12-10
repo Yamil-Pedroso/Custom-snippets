@@ -2,46 +2,40 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useComponentContext } from "../../context/componentContext";
 import { createComponent } from "../../services/ComponentService";
+import {
+  Container,
+  Title,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Textarea,
+  Button,
+  ErrorMessage,
+} from "./styles";
 
 const CreateSnippet: React.FC = () => {
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [codeSnippet, setCodeSnippet] = useState<string>("");
   const [tags, setTags] = useState<string>("");
-  const { setComponents } = useComponentContext(); // Usar contexto para actualizar la lista
+  const { setComponents } = useComponentContext();
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const inputStyle = {
-    margin: "10px 0",
-    padding: "8px",
-    width: "100%",
-    borderRadius: "4px",
-    border: "1px solid #ccc",
-  };
-
-  const buttonStyle = {
-    padding: "10px 20px",
-    marginTop: "20px",
-    backgroundColor: "#007bff",
-    color: "white",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
+  const validateForm = () => {
+    if (!name.trim()) return "Name is required!";
+    if (!codeSnippet.trim()) return "Code snippet is required!";
+    if (!tags.trim()) return "At least one tag is required!";
+    return null;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!name.trim()) {
-      return alert("Name is required!");
-    }
-    if (!codeSnippet.trim()) {
-      return alert("Code snippet is required!");
-    }
-    if (!tags.trim()) {
-      return alert("At least one tag is required!");
-    }
+    const errorMsg = validateForm();
+    if (errorMsg) return setError(errorMsg);
 
     try {
       const newSnippet = {
@@ -64,55 +58,53 @@ const CreateSnippet: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      {loading ? <p>Loading...</p> : null}
-      <h1>Create a New Snippet</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Name:</label>
-          <input
+    <Container>
+      <Title>Create a New Snippet</Title>
+      {loading && <p>Loading...</p>}
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+      <Form onSubmit={handleSubmit}>
+        <FormGroup>
+          <Label htmlFor="name">Name:</Label>
+          <Input
             type="text"
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            style={inputStyle}
+            required
           />
-        </div>
-        <div>
-          <label htmlFor="description">Description:</label>
-          <input
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="description">Description:</Label>
+          <Input
             type="text"
             id="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            style={inputStyle}
           />
-        </div>
-        <div>
-          <label htmlFor="codeSnippet">Code Snippet:</label>
-          <textarea
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="codeSnippet">Code Snippet:</Label>
+          <Textarea
             id="codeSnippet"
             value={codeSnippet}
             onChange={(e) => setCodeSnippet(e.target.value)}
             rows={10}
-            style={{ ...inputStyle, height: "150px" }}
+            required
           />
-        </div>
-        <div>
-          <label htmlFor="tags">Tags:</label>
-          <input
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="tags">Tags:</Label>
+          <Input
             type="text"
             id="tags"
             value={tags}
             onChange={(e) => setTags(e.target.value)}
-            style={inputStyle}
+            required
           />
-        </div>
-        <button type="submit" style={buttonStyle}>
-          Create Snippet
-        </button>
-      </form>
-    </div>
+        </FormGroup>
+        <Button type="submit">Create Snippet</Button>
+      </Form>
+    </Container>
   );
 };
 

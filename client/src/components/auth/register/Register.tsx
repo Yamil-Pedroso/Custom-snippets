@@ -1,13 +1,22 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../../../services/UserService";
+import {
+  Container,
+  Title,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Button,
+  ErrorMessage,
+} from "./styles";
 
 const Register: React.FC = () => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
-    //confirmPassword: "",
   });
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -20,17 +29,15 @@ const Register: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    //if (formData.password !== formData.confirmPassword) {
-    //  setError("Passwords do not match");
-    //  return;
-    //}
-
     try {
       await registerUser({
         username: formData.username,
         email: formData.email,
         password: formData.password,
-        isAdmin: false, // Puedes cambiar este valor según sea necesario
+        isAdmin: false,
+        _id: "",
+        avatar: "",
+        active: false,
       });
       navigate("/login"); // Redirige al login después del registro
     } catch (err) {
@@ -40,53 +47,43 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h1>Register</h1>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Username:</label>
-          <input
+    <Container>
+      <Title>Register</Title>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+      <Form onSubmit={handleSubmit}>
+        <FormGroup>
+          <Label>Username:</Label>
+          <Input
             type="text"
             name="username"
             value={formData.username}
             onChange={handleChange}
             required
           />
-        </div>
-        <div>
-          <label>Email:</label>
-          <input
+        </FormGroup>
+        <FormGroup>
+          <Label>Email:</Label>
+          <Input
             type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
             required
           />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
+        </FormGroup>
+        <FormGroup>
+          <Label>Password:</Label>
+          <Input
             type="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
             required
           />
-        </div>
-        {/*<div>
-          <label>Confirm Password:</label>
-          <input
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            required
-          />
-        </div>*/}
-        <button type="submit">Register</button>
-      </form>
-    </div>
+        </FormGroup>
+        <Button type="submit">Register</Button>
+      </Form>
+    </Container>
   );
 };
 

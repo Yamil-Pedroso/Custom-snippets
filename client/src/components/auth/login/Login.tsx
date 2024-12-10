@@ -2,6 +2,16 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../../services/UserService";
 import { useUserContext } from "../../../context/userContext";
+import {
+  Container,
+  Title,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Button,
+  ErrorMessage,
+} from "./styles";
 
 const Login: React.FC = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -28,33 +38,33 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h1>Login</h1>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
-          <input
+    <Container>
+      <Title>Login</Title>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+      <Form onSubmit={handleSubmit}>
+        <FormGroup>
+          <Label>Email:</Label>
+          <Input
             type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
             required
           />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
+        </FormGroup>
+        <FormGroup>
+          <Label>Password:</Label>
+          <Input
             type="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
             required
           />
-        </div>
-        <button type="submit">Login</button>
-      </form>
-    </div>
+        </FormGroup>
+        <Button type="submit">Login</Button>
+      </Form>
+    </Container>
   );
 };
 
