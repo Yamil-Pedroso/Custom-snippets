@@ -22,7 +22,7 @@ const Navbar: React.FC = () => {
   };
 
   const getLinkStyle = (path: string) => ({
-    color: location.pathname === path ? "yellow" : "#fff",
+    color: location.pathname === path ? "#aaea60" : "#fff",
     textDecoration: "none",
   });
 
@@ -92,7 +92,7 @@ const Navbar: React.FC = () => {
           <button
             onClick={handleLogout}
             style={{
-              backgroundColor: "#f00",
+              backgroundColor: "#333333",
               color: "#fff",
               border: "none",
               padding: "0.5rem 1rem",

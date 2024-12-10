@@ -7,6 +7,7 @@ export const ProfileContainer = styled.div`
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
 `;
 
 export const UserInfo = styled.div`
@@ -76,4 +77,17 @@ export const SnippetCard = styled.div`
     font-family: "Courier New", Courier, monospace;
     font-size: 0.9rem;
   }
+`;
+
+export const StatusWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+export const StatusCircle = styled.div<{ active: boolean }>`
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: ${(props) => (props.active ? "green" : "red")};
 `;

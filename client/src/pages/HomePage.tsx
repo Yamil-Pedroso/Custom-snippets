@@ -1,14 +1,13 @@
+import Hero from "../components/hero/Hero";
+import Features from "../components/features/Features";
+import PublicSnippets from "../components/public-snippets/PublicSnippets";
+
 const HomePage = () => {
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "90vh",
-      }}
-    >
-      HomePage
+    <div>
+      <Hero />
+      <Features />
+      <PublicSnippets />
     </div>
   );
 };
