@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { motion } from "framer-motion";
 
 export const Container = styled.div`
   padding: 2rem;
@@ -107,7 +108,7 @@ export const UserCardWrapper = styled.div`
   position: relative;
 `;
 
-export const UserCard = styled.div`
+export const UserCard = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -121,3 +121,13 @@ export const deleteUser = async (id: string): Promise<void> => {
         throw error;
     }
 }
+
+export const searchUsers = async (query: string): Promise<IUser[]> => {
+    try {
+        const response = await axios.get<IUser[]>(`${API_URL}/search-users?query=${query}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error searching users:", error);
+        throw error;
+    }
+}

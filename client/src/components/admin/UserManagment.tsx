@@ -1,31 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { IUser, getUsers, deleteUser } from "../../services/UserService";
+import { IUser, getUsers } from "../../services/UserService";
+import { AnimatePresence } from "framer-motion";
 import { useUserContext } from "../../context/userContext";
 import { useNavigate } from "react-router-dom";
 import {
   Container,
-  Title,
-  UserTable,
-  TableRow,
-  TableHeader,
-  TableCell,
-  DeleteButton,
-  StatusIndicator,
-  UserCard,
   UserCardWrapper,
+  UserCard,
   UserCardFooter,
+  StatusIndicator,
 } from "./styles";
 
 const UserManagement: React.FC = () => {
-  const [users, setUsers] = useState<IUser[]>([]);
+  const [users, setUsers] = useState<IUser[]>([]); // Lista completa de usuarios
+  const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]); // Usuarios filtrados
+  const [searchQuery, setSearchQuery] = useState<string>(""); // Consulta de búsqueda
   const { currentUser } = useUserContext();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Verificar si el usuario es administrador
     if (!currentUser || !currentUser.isAdmin) {
-      navigate("/"); // Redirige si no es administrador
+      navigate("/");
       return;
     }
 
@@ -33,6 +30,8 @@ const UserManagement: React.FC = () => {
       try {
         const data = await getUsers();
         setUsers(data);
+        setFilteredUsers(data); // Inicialmente muestra todos los usuarios
+        setError(null);
       } catch (error) {
         console.error("Error fetching users:", error);
       } finally {
@@ -43,15 +42,23 @@ const UserManagement: React.FC = () => {
     fetchUsers();
   }, [currentUser, navigate]);
 
-  const handleDelete = async (id: string) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      try {
-        await deleteUser(id);
-        setUsers(users.filter((user) => user._id !== id));
-      } catch (error) {
-        console.error("Error deleting user:", error);
-      }
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+
+    if (!query.trim()) {
+      // Si no hay texto en el campo de búsqueda, muestra todos los usuarios
+      setFilteredUsers(users);
+      return;
     }
+
+    // Filtra los usuarios por nombre o email
+    const filtered = users.filter(
+      (user) =>
+        user.username.toLowerCase().includes(query.toLowerCase()) ||
+        user.email.toLowerCase().includes(query.toLowerCase())
+    );
+
+    setFilteredUsers(filtered);
   };
 
   if (loading) {
@@ -59,87 +66,69 @@ const UserManagement: React.FC = () => {
       <Container>
         <div className="loader"></div>
       </Container>
-    )
+    );
   }
 
   return (
     <Container>
+      {/* Campo de búsqueda */}
+      <div style={{ marginBottom: "1rem" }}>
+        <input
+          type="text"
+          placeholder="Search by name or email"
+          value={searchQuery}
+          onChange={(e) => handleSearch(e.target.value)}
+          style={{
+            padding: "0.5rem",
+            width: "100%",
+            borderRadius: "5px",
+            border: "1px solid #ccc",
+          }}
+        />
+      </div>
 
-     {/* <UserTable>
-        <thead>
-          <TableRow>
-            <TableHeader>Email</TableHeader>
-            <TableHeader>Registration Date</TableHeader>
-            <TableHeader>Admin</TableHeader>
-            <TableHeader>Status</TableHeader>
-            <TableHeader>Actions</TableHeader>
-            <TableHeader>Avatar</TableHeader>
-          </TableRow>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <TableRow key={user._id}>
-              <TableCell>{user.email}</TableCell>
-              <TableCell>
-                {new Date(user.createdAt).toLocaleDateString()}
-              </TableCell>
-              <TableCell>{user.isAdmin ? "Yes" : "No"}</TableCell>
-              <TableCell>
-                <StatusIndicator active={user.active} />{" "}
-              </TableCell>
-              <TableCell>
-                <DeleteButton onClick={() => handleDelete(user._id)}>
-                  Delete
-                </DeleteButton>
-              </TableCell>
-
-              <TableCell>
-                <div
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    borderRadius: "50%",
-                    overflow: "hidden",
-                  }}
+      {/* Lista de usuarios filtrados */}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <div style={{ marginTop: "1rem" }}>
+        <AnimatePresence>
+          <UserCardWrapper>
+            {filteredUsers.length > 0 ? (
+              filteredUsers.map((user) => (
+                <UserCard
+                  key={user._id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ type: "spring", stiffness: 100 }}
                 >
-                  <img
-                    src={user.avatar}
-                    alt="User avatar"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                    }}
-                  />
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
-        </tbody>
-      </UserTable> */}
-
-      <UserCardWrapper>
-        {users.map((user) => (
-          <UserCard key={user._id}>
-            <div className="img-wrapper">
-              <img src={user.avatar} alt="User avatar" />
-            </div>
-              <StatusIndicator active={user.active} />
-            <div className="content">
-              <p>{user.email}</p>
-              <p>{user.isAdmin ? <strong style={{ color: "green" }}>Admin</strong> : "User"}</p>
-              <button onClick={() => handleDelete(user._id)}>Delete</button>
-            </div>
-
-            <UserCardFooter>
-              <p>
-                <strong>Registration Date:</strong>{" "}
-                {new Date(user.createdAt).toLocaleDateString()}
-              </p>
-            </UserCardFooter>
-          </UserCard>
-        ))}
-      </UserCardWrapper>
+                  <div className="img-wrapper">
+                    <img src={user.avatar} alt="User avatar" />
+                  </div>
+                  <StatusIndicator active={user.active} />
+                  <div className="content">
+                    <p>{user.username}</p>
+                    <p>
+                      {user.isAdmin ? (
+                        <strong style={{ color: "green" }}>Admin</strong>
+                      ) : (
+                        "User"
+                      )}
+                    </p>
+                  </div>
+                  <UserCardFooter>
+                    <p>
+                      <strong>Registration Date:</strong>{" "}
+                      {new Date(user.createdAt).toLocaleDateString()}
+                    </p>
+                  </UserCardFooter>
+                </UserCard>
+              ))
+            ) : (
+              <p>No users found</p>
+            )}
+          </UserCardWrapper>
+        </AnimatePresence>
+      </div>
     </Container>
   );
 };

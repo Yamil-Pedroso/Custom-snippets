@@ -8,6 +8,7 @@ import {
     getUsers,
     deleteUser,
     uploadAvatar,
+    searchUsers
 } from "../controllers/authController";
 import { protect, admin } from "../middlewares/authMiddleware";
 import multer from "multer"
@@ -19,9 +20,10 @@ const router = Router();
 router.post("/register", upload.single('avatar'), registerUser);
 router.get("/me", protect, getCurrentUser);
 router.post("/login", loginUser);
-router.post("/logout", logoutUser);
+router.post("/logout", protect, logoutUser);
 router.post('/upload-avatar', upload.single('avatar'), uploadAvatar);
 router.put("/:id", protect, updateUser);
+router.get("/search-users", protect, admin, searchUsers);
 
 // Rutas accesibles solo para administradores
 router.get("/users", protect, admin, getUsers); // Solo para administradores

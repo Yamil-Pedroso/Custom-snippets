@@ -79,13 +79,18 @@ export const getCurrentUser = async (req: Request, res: Response) => {
   
 
 // Logout user
-export const logoutUser = async (req: Request, res: Response, next: NextFunction) => {
+export const logoutUser = async (req: Request, res: any, next: NextFunction) => {
     try {
-        //const user = await User.findById(req.user.id);
-        //if(user) {
-        //    user.active = false;
-        //    await user.save();
-        //}
+        if (!req.user) {
+            return res.status(401).json({ message: "User not logged in" });
+        }
+
+        // Encuentra el usuario por el ID en req.user
+        const user = await User.findById(req.user.id);
+        if (user) {
+            user.active = false; // Cambiar el estado activo a falso
+            await user.save();
+        }
         
         res.cookie('token', null, {
             expires: new Date(Date.now() + 10 * 1000),
@@ -223,4 +228,25 @@ export const deleteUser = async (req: any, res: any, next: NextFunction) => {
     }
 };
 
+// Search users
+export const searchUsers = async (req: any, res: any): Promise<void> => {
+    const { query } = req.query; // Renombrado para admitir múltiples criterios
 
+    if (!query) {
+        return res.status(400).json({ message: "Query parameter is required" });
+    }
+
+    try {
+        // Buscar usuarios por nombre de usuario o email
+        const users = await User.find({
+            $or: [
+                { username: { $regex: new RegExp(query as string, "i") } },
+                { email: { $regex: new RegExp(query as string, "i") } },
+            ],
+        }).select("-password");
+
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ message: "Error searching users", error });
+    }
+};
