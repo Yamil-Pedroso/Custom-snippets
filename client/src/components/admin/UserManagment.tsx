@@ -11,11 +11,15 @@ import {
   TableCell,
   DeleteButton,
   StatusIndicator,
+  UserCard,
+  UserCardWrapper,
+  UserCardFooter,
 } from "./styles";
 
 const UserManagement: React.FC = () => {
   const [users, setUsers] = useState<IUser[]>([]);
   const { currentUser } = useUserContext();
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,6 +35,8 @@ const UserManagement: React.FC = () => {
         setUsers(data);
       } catch (error) {
         console.error("Error fetching users:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -48,10 +54,18 @@ const UserManagement: React.FC = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <Container>
+        <div className="loader"></div>
+      </Container>
+    )
+  }
+
   return (
     <Container>
-      <Title>User Management</Title>
-      <UserTable>
+
+     {/* <UserTable>
         <thead>
           <TableRow>
             <TableHeader>Email</TableHeader>
@@ -59,6 +73,7 @@ const UserManagement: React.FC = () => {
             <TableHeader>Admin</TableHeader>
             <TableHeader>Status</TableHeader>
             <TableHeader>Actions</TableHeader>
+            <TableHeader>Avatar</TableHeader>
           </TableRow>
         </thead>
         <tbody>
@@ -77,10 +92,54 @@ const UserManagement: React.FC = () => {
                   Delete
                 </DeleteButton>
               </TableCell>
+
+              <TableCell>
+                <div
+                  style={{
+                    width: "40px",
+                    height: "40px",
+                    borderRadius: "50%",
+                    overflow: "hidden",
+                  }}
+                >
+                  <img
+                    src={user.avatar}
+                    alt="User avatar"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                </div>
+              </TableCell>
             </TableRow>
           ))}
         </tbody>
-      </UserTable>
+      </UserTable> */}
+
+      <UserCardWrapper>
+        {users.map((user) => (
+          <UserCard key={user._id}>
+            <div className="img-wrapper">
+              <img src={user.avatar} alt="User avatar" />
+            </div>
+              <StatusIndicator active={user.active} />
+            <div className="content">
+              <p>{user.email}</p>
+              <p>{user.isAdmin ? <strong style={{ color: "green" }}>Admin</strong> : "User"}</p>
+              <button onClick={() => handleDelete(user._id)}>Delete</button>
+            </div>
+
+            <UserCardFooter>
+              <p>
+                <strong>Registration Date:</strong>{" "}
+                {new Date(user.createdAt).toLocaleDateString()}
+              </p>
+            </UserCardFooter>
+          </UserCard>
+        ))}
+      </UserCardWrapper>
     </Container>
   );
 };

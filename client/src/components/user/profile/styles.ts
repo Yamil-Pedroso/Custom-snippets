@@ -31,6 +31,7 @@ export const AvatarWrapper = styled.div`
     width: 10rem;
     height: 10rem;
     border-radius: 50%;
+    border: 3px solid #333;
     overflow: hidden;
 
     img {

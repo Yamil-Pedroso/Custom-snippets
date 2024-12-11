@@ -111,7 +111,9 @@ const Navbar: React.FC = () => {
             gap: "1.5rem",
           }}
         >
-          <FaUser size={24} />
+          <FaUser
+           style={{ color: "#aaea60" }}
+          size={24} />
           <Link
             to="/register"
             style={{ color: "#fff", textDecoration: "none" }}

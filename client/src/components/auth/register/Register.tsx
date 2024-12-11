@@ -11,6 +11,7 @@ import {
   Button,
   ErrorMessage,
 } from "./styles";
+import Confetti from "react-confetti";
 
 const Register: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ const Register: React.FC = () => {
     password: "",
   });
   const [error, setError] = useState<string | null>(null);
+  const [showConfetti, setShowConfetti] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,6 +30,11 @@ const Register: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!formData.username || !formData.email || !formData.password) {
+      setError("All fields are required");
+      return;
+    }
 
     try {
       await registerUser({
@@ -39,7 +46,13 @@ const Register: React.FC = () => {
         avatar: "",
         active: false,
       });
-      navigate("/login"); // Redirige al login después del registro
+      setFormData({ username: "", email: "", password: "" });
+      setShowConfetti(true);
+      setError(null);
+      setTimeout(() => {
+        navigate("/login");
+      }
+      , 5000);
     } catch (err) {
       setError("Error registering user. Please try again.");
       console.error(err);
@@ -48,6 +61,7 @@ const Register: React.FC = () => {
 
   return (
     <Container>
+      {showConfetti && <Confetti />}
       <Title>Register</Title>
       {error && <ErrorMessage>{error}</ErrorMessage>}
       <Form onSubmit={handleSubmit}>
