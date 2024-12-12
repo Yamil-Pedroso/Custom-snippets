@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { HeroContainer, HeroContent, HeroLeft, HeroRight } from "./styles"
-//import images from "../../assets"
+import images from "../../assets"
 
 const Hero = () => {
     const navigate = useNavigate()
@@ -10,17 +10,10 @@ const Hero = () => {
         <HeroLeft>
         <h1>Transform your ideas into Unique Snippets</h1>
         <p>Create, share and organize your code snippets with ease.</p>
-        <button onClick={() => navigate("/register")}>Empieza Ahora</button>
+        <button onClick={() => navigate("/register")}>Start Now</button>
         </HeroLeft>
         <HeroRight>
-          <h1
-            style={{
-              
-              color: "#4b692a",
-          
-            }}
-          >Start Now</h1>
-            
+          <img src={images.bg_1} alt="Read Snippets" />
         </HeroRight>
       </HeroContent>
     </HeroContainer>

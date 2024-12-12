@@ -40,8 +40,8 @@ export const Input = styled.input`
   outline: none;
 
   &:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    border-color: #4b6929;
+    box-shadow: 0 0 5px rgba(41, 123, 103, 0.5);
   }
 `;
 
@@ -49,7 +49,7 @@ export const Button = styled.button`
   padding: 10px 20px;
   font-size: 16px;
   color: #fff;
-  background-color: #007bff;
+  background-color: #4b6929;
   border: none;
   border-radius: 4px;
   cursor: pointer;

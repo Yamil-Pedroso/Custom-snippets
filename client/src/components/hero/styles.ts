@@ -1,14 +1,19 @@
 import styled from "styled-components";
 
 export const HeroContainer = styled.div`
+  width: 100%;
+  height: 50rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: ${({ theme }) => theme.colors.bgBody};
 `;
 
 export const HeroContent = styled.div`
-  width: 100%;
   display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 80%;
 `;
 
 export const HeroLeft = styled.div`
@@ -19,17 +24,18 @@ export const HeroLeft = styled.div`
   padding: 0 2rem;
   width: 50%;
   height: 50vh;
-  background-color: #39444d;
 
   h1 {
-    color: #fff;
-    font-size: 2rem;
+    color: #333;
+    font-size: 4rem;
     margin-bottom: 1rem;
   }
 
   p {
-    color: #ccc;
+    color: #333;
     margin-bottom: 1rem;
+    font-size: 1.3rem;
+    font-weight: bold;
   }
 
   button {
@@ -37,8 +43,8 @@ export const HeroLeft = styled.div`
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
-    background-color: #f9f9f9;
-    color: #333;
+    background-color: #4b6929;
+    color: #fff;
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
@@ -46,12 +52,21 @@ export const HeroLeft = styled.div`
 `;
 
 export const HeroRight = styled.div`
-  width: 50%;
-  height: 50vh;
-  background-color: #18191a;
+  width: 40%;
+  height: 40rem;
+  background-color: #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 4px solid #333333;
+  box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+
+  img {
+    height: 90%;
+    object-fit: cover;
+
+  }
 
   h1 {
     font-size: 2rem;

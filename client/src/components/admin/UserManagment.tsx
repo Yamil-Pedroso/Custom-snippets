@@ -107,6 +107,7 @@ const UserManagement: React.FC = () => {
                   <StatusIndicator active={user.active} />
                   <div className="content">
                     <p>{user.username}</p>
+                    <p>{user.email}</p>
                     <p>
                       {user.isAdmin ? (
                         <strong style={{ color: "green" }}>Admin</strong>
