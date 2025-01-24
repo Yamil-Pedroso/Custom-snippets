@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
 export const FeaturesContainer = styled.div`
+     display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
     padding: 2rem;
-    max-width: 900px;
     margin: 2rem auto;
-    background-color: ${props => props.theme.colors.bg2};
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     position: relative;
 
     h2 {
@@ -28,8 +28,7 @@ export const FeaturesContainer = styled.div`
             font-size: 1.2rem;
 
             p {
-                color: #4b692a;
-                font-weight: bold;
+                color: #ff7226;
             }
 
             .icon {

@@ -112,7 +112,7 @@ const Navbar: React.FC = () => {
           }}
         >
           <FaUser
-           style={{ color: "#aaea60" }}
+           style={{ color: "#ff7225" }}
           size={24} />
           <Link
             to="/register"

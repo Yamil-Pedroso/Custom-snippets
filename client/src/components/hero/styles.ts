@@ -43,7 +43,7 @@ export const HeroLeft = styled.div`
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
-    background-color: #4b6929;
+    background-color: #ff7225;
     color: #fff;
     font-size: 1rem;
     font-weight: bold;
