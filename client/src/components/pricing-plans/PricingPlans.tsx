@@ -70,7 +70,7 @@ const PlanFeature = styled.li`
 
   &::before {
     content: '✓';
-    color: #007bff;
+    color: #ff7225;
     margin-right: 0.5rem;
   }
 `;
@@ -86,7 +86,10 @@ const Button = styled.button`
   transition: background-color 0.2s;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #fff;
+    color: #ff7225;
+    border: 2px solid #ff7225;
+    font-weight: bold;
   }
 `;
 

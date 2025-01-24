@@ -24,7 +24,7 @@ const Navbar: React.FC = () => {
   };
 
   const getLinkStyle = (path: string) => ({
-    color: location.pathname === path ? "#aaea60" : "#fff",
+    color: location.pathname === path ? "#ff7225" : "#fff",
     textDecoration: "none",
   });
 
@@ -75,7 +75,7 @@ const Navbar: React.FC = () => {
             />
           </div>
           <h3>
-            {currentUser?.isAdmin ? "Admin" : "User"}: {currentUser?.username}
+            {currentUser?.isAdmin ? "Admin" : "User"} : <span style={{ color: "#ff7225" }}>{currentUser?.username}</span>
           </h3>
           <Link to="/profile" style={getLinkStyle("/profile")}>
             Profile
