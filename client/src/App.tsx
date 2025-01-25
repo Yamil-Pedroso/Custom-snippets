@@ -17,6 +17,7 @@ import Login from "./components/auth/login/Login";
 import Register from "./components/auth/register/Register";
 import Profile from "./components/user/profile/Profile";
 import Dashboard from "./components/user/dashboard/Dashboard";
+import { Toaster } from "sonner";
 
 const App: React.FC = () => {
   return (
@@ -24,7 +25,15 @@ const App: React.FC = () => {
       <UserProvider>
         <ThemeProvider theme={theme}>
           <GlobalStyles />
+          <Toaster
+            style={{
+              padding: "1rem",
+             }}
+            position="top-right"
+            duration={5000}
+           />
           <Router>
+
             <Navbar />
             <Routes>
               <Route path="/" element={<HomePage />} />

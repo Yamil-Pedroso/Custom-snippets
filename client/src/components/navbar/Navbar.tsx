@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useUserContext } from "../../context/userContext";
 import { logoutUser } from "../../services/UserService";
 import { FaUser } from "react-icons/fa";
+import { toast } from "sonner";
 
 const Navbar: React.FC = () => {
   const { currentUser, setCurrentUser } = useUserContext(); // Obtenemos el usuario actual del contexto
@@ -16,6 +17,9 @@ const Navbar: React.FC = () => {
       await logoutUser();
       localStorage.removeItem("authToken"); // Eliminar token del localStorage
       setCurrentUser(null); // Limpiar el contexto del usuario
+      toast.success("Logged out successfully", {
+        className: "toast",
+      });
       navigate("/login"); // Redirigir al login
     } catch (error) {
       console.error("Error logging out:", error);

@@ -12,6 +12,7 @@ import {
   ErrorMessage,
 } from "./styles";
 import Confetti from "react-confetti";
+import { toast } from "sonner";
 
 const Register: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -48,6 +49,9 @@ const Register: React.FC = () => {
       });
       setFormData({ username: "", email: "", password: "" });
       setShowConfetti(true);
+      toast.success("User registered successfully. Redirecting to login page...", {
+        className: "toast",
+      });
       setError(null);
       setTimeout(() => {
         navigate("/login");

@@ -7,6 +7,7 @@ import HowItWorks from "../components/how-works/HowItWorks";
 import PricingPlans from "../components/pricing-plans/PricingPlans";
 import CommunitySection from "../components/community/CommunitySection";
 import Footer from "../components/footer/Footer";
+import WelcomeMessage from "../components/common/welcome-message/WelcomeMessage";
 
 const HomePage = () => {
   return (
@@ -20,6 +21,7 @@ const HomePage = () => {
       <PricingPlans />
       <CommunitySection />
       <Footer />
+      <WelcomeMessage />
     </div>
   );
 };

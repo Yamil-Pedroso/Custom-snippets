@@ -11,5 +11,10 @@ export const GlobalStyles = createGlobalStyle`
         font-family: 'Arial', sans-serif;
         background-color: ${({ theme }) => theme.colors.bgBody};
         color: ${({ theme }) => theme.text.secondary};
+        position: relative;
+    }
+
+    .toast {
+        padding: 1rem 1rem;
     }
 `;

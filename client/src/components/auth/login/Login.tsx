@@ -12,6 +12,7 @@ import {
   Button,
   ErrorMessage,
 } from "./styles";
+import { toast } from "sonner";
 
 const Login: React.FC = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -30,12 +31,17 @@ const Login: React.FC = () => {
       const { token, user } = await loginUser(formData.email, formData.password);
       localStorage.setItem("authToken", token); // Guarda el token en localStorage
       setCurrentUser(user); // Actualiza el contexto del usuario
+      toast.success("Logged in successfully", {
+        className: "toast",
+      });
       navigate("/dashboard"); // Redirige al dashboard
     } catch (err) {
       setError("Invalid email or password");
       console.error(err);
     }
   };
+
+
 
   return (
     <Container>
