@@ -12,21 +12,23 @@ import images from "../../assets";
 
 const Hero = () => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isTakingOff, setIsTakingOff] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
+  const [flyOutViewPort, setFlyOutViewPort] = useState(false);
   const navigate = useNavigate();
 
-  const handleHover = (hover: boolean) => {
-    setIsHovered(hover); 
+  const handleHover = () => {
+    setIsHovered((prev) => !prev);
   };
+
   const handleLeave = () => {
-    setIsHovered(false); 
-  };
+    setIsHovered(false);
+  }
 
-  const handleTakeOff = () => {
-    setIsTakingOff(true); 
-
+  const handleClick = () => {
+    setIsClicked(true);
+    setFlyOutViewPort(true);
     setTimeout(() => {
-      navigate("/register"); 
+      navigate("/register");
     }, 2000);
   };
 
@@ -52,10 +54,19 @@ const Hero = () => {
                 Create, share, and organize your code snippets with ease.
               </p>
             </div>
-            <RocketImageWrapper>
+            <RocketImageWrapper
+              className={
+                isHovered
+                  ? "takeoffRocket"
+                  : flyOutViewPort
+                    ? "flyOutViewPort"
+                    : isClicked
+                      ? "flyOutViewPort"
+                      : ""
+              }
+            >
               <RocketImage
-                takeoff={isHovered || false} // Asegurarse de que tenga un valor booleano
-                btnClick={isTakingOff || false}
+
                 src={images.rocket}
                 alt="Rocket"
                 width="200"
@@ -63,9 +74,9 @@ const Hero = () => {
             </RocketImageWrapper>
           </div>
           <HeroButton
-            onMouseEnter={() => handleHover(true)}
+            onMouseEnter={handleHover}
             onMouseLeave={handleLeave}
-            onClick={handleTakeOff}
+            onClick={handleClick}
           >
             Start Now
           </HeroButton>

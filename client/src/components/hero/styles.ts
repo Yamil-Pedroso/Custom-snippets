@@ -1,4 +1,4 @@
-import { li } from "framer-motion/client";
+
 import styled, { keyframes } from "styled-components";
 
 interface IRocketProps {
@@ -82,22 +82,20 @@ export const HeroLeft = styled.div`
 
 export const RocketImageWrapper = styled.div`
   position: relative;
+  animation: ${liftOff} 3s infinite;
+  
+  &.takeoffRocket {
+    animation: ${takeoffRocket} .2s infinite;
+  }
+
+  &.flyOutViewPort {
+    animation: ${flyOutViewport} 1s forwards;
+  }
 `;
 
 // Imagen del cohete con animación
 export const RocketImage = styled.img<IRocketProps>`
-  animation: ${({ takeoff, btnClick }) =>
-      btnClick
-        ? flyOutViewport // Despegue final
-        : takeoff
-        ? takeoffRocket // Hover acelerado
-        : liftOff} // Animación por defecto
-    ${({ btnClick, takeoff }) =>
-      btnClick
-        ? "2s ease-in-out forwards"
-        : takeoff
-        ? "0.2s infinite ease-in-out"
-        : "3s infinite ease-in-out"};
+   
 `;
 
 // Botón animado
