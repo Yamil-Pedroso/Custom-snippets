@@ -1,12 +1,39 @@
+import { li } from "framer-motion/client";
 import styled, { keyframes } from "styled-components";
 
-// Animación para el cohete (movimiento hacia arriba y abajo)
+interface IRocketProps {
+  takeoff?: boolean;
+  btnHover?: boolean;
+  btnClick?: boolean;
+}
+
 const liftOff = keyframes`
   0%, 100% {
     transform: translateY(0) scale(1);
   }
   50% {
     transform: translateY(-15px) scale(1.05);
+  }
+`;
+
+const takeoffRocket = keyframes`
+  0% {
+    transform: translate(0, 0); /* Posición inicial */
+  }
+  50% {
+    transform: translate(12px, -12px); /* Movimiento diagonal hacia arriba y a la derecha */
+  }
+  100% {
+    transform: translate(0, 0); /* Volver a la posición inicial */
+  }
+`;
+
+const flyOutViewport = keyframes`
+  0% {
+    transform: translate(0, 0); /* Posición inicial */
+  }
+  100% {
+    transform: translate(100vw, -100vh); /* Salida completa del viewport */
   }
 `;
 
@@ -53,32 +80,47 @@ export const HeroLeft = styled.div`
   }
 `;
 
+export const RocketImageWrapper = styled.div`
+  position: relative;
+`;
+
 // Imagen del cohete con animación
-export const RocketImage = styled.img`
-  animation: ${liftOff} 2.5s infinite ease-in-out;
+export const RocketImage = styled.img<IRocketProps>`
+  animation: ${({ takeoff, btnClick }) =>
+      btnClick
+        ? flyOutViewport // Despegue final
+        : takeoff
+        ? takeoffRocket // Hover acelerado
+        : liftOff} // Animación por defecto
+    ${({ btnClick, takeoff }) =>
+      btnClick
+        ? "2s ease-in-out forwards"
+        : takeoff
+        ? "0.2s infinite ease-in-out"
+        : "3s infinite ease-in-out"};
 `;
 
 // Botón animado
-export const HeroButton = styled.button`
+export const HeroButton = styled.button<IRocketProps>`
   margin-top: 0rem;
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 8px;
-  background-color: #ff7225;
+  background-color: ${({ btnHover }) => (btnHover ? "#ff944d" : "#ff7225")};
   color: #fff;
   font-size: 1.2rem;
   font-weight: bold;
   cursor: pointer;
-  box-shadow: 0px 4px 0px #6a458d, 0px 8px 15px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0px 4px 0px #7680e4, 0px 8px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s;
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0px 6px 0px #ff7225, 0px 10px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 6px 0px #ff944d, 0px 10px 20px rgba(0, 0, 0, 0.3);
   }
 
   &:active {
     transform: translateY(2px);
-    box-shadow: 0px 2px 0px #ff7225, 0px 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 2px 0px #ff944d, 0px 4px 10px rgba(0, 0, 0, 0.2);
   }
 `;
