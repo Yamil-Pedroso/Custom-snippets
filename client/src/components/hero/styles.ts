@@ -1,4 +1,3 @@
-
 import styled, { keyframes } from "styled-components";
 
 interface IRocketProps {
@@ -18,26 +17,25 @@ const liftOff = keyframes`
 
 const takeoffRocket = keyframes`
   0% {
-    transform: translate(0, 0); /* Posición inicial */
+    transform: translate(0, 0); 
   }
   50% {
-    transform: translate(12px, -12px); /* Movimiento diagonal hacia arriba y a la derecha */
+    transform: translate(12px, -12px); 
   }
   100% {
-    transform: translate(0, 0); /* Volver a la posición inicial */
+    transform: translate(0, 0); 
   }
 `;
 
 const flyOutViewport = keyframes`
   0% {
-    transform: translate(0, 0); /* Posición inicial */
+    transform: translate(0, 0); 
   }
   100% {
-    transform: translate(100vw, -100vh); /* Salida completa del viewport */
+    transform: translate(100vw, -100vh); 
   }
 `;
 
-// Contenedor principal del Hero
 export const HeroContainer = styled.div`
   width: 100%;
   height: 30rem;
@@ -51,17 +49,16 @@ export const HeroContainer = styled.div`
   color: #fff;
 `;
 
-// Contenido del Hero
 export const HeroContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  z-index: 2; /* Para asegurarse de que el texto esté por encima del fondo */
+  z-index: 2; 
   padding: 2rem;
   max-width: 800px;
 `;
 
-// Texto del lado izquierdo
+
 export const HeroLeft = styled.div`
   display: flex;
   flex-direction: column;
@@ -71,12 +68,12 @@ export const HeroLeft = styled.div`
   h1 {
     font-size: 3rem;
     font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Sombra para destacar */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
   }
 
   p {
     font-size: 1.2rem;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Sombra para destacar */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); 
   }
 `;
 
@@ -93,12 +90,10 @@ export const RocketImageWrapper = styled.div`
   }
 `;
 
-// Imagen del cohete con animación
 export const RocketImage = styled.img<IRocketProps>`
    
 `;
 
-// Botón animado
 export const HeroButton = styled.button<IRocketProps>`
   margin-top: 0rem;
   padding: 0.75rem 1.5rem;

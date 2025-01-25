@@ -17,11 +17,15 @@ const Hero = () => {
   const navigate = useNavigate();
 
   const handleHover = () => {
-    setIsHovered((prev) => !prev);
+    if (!isClicked) {
+      setIsHovered(true);
+    }
   };
 
   const handleLeave = () => {
-    setIsHovered(false);
+    if (!isClicked) {
+      setIsHovered(false);
+    }
   }
 
   const handleClick = () => {
@@ -56,13 +60,11 @@ const Hero = () => {
             </div>
             <RocketImageWrapper
               className={
-                isHovered
+                flyOutViewPort 
+                  ? "flyOutViewPort"
+                  : isHovered 
                   ? "takeoffRocket"
-                  : flyOutViewPort
-                    ? "flyOutViewPort"
-                    : isClicked
-                      ? "flyOutViewPort"
-                      : ""
+                  : ""
               }
             >
               <RocketImage
