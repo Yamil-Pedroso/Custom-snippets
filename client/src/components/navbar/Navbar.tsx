@@ -3,7 +3,6 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useUserContext } from "../../context/userContext";
 import { logoutUser } from "../../services/UserService";
 import { FaUser } from "react-icons/fa";
-import images from "../../assets";
 
 const Navbar: React.FC = () => {
   const { currentUser, setCurrentUser } = useUserContext(); // Obtenemos el usuario actual del contexto
@@ -35,7 +34,7 @@ const Navbar: React.FC = () => {
         justifyContent: "space-between",
         alignItems: "center",
         padding: "1rem 2rem",
-        backgroundColor: "#333",
+        backgroundColor: "#2d3133",
         color: "#fff",
       }}
     >
@@ -43,7 +42,7 @@ const Navbar: React.FC = () => {
          style={{ display: "flex" }}
       >
         <Link to="/" style={{ color: "#fff", textDecoration: "none", display: "flex", alignItems: "center" }}>
-          <img src={images.logo} alt="Logo" style={{ width: "5rem" }} />
+
           <h2 style={{ color: "#ff7225"}}>SNIPPETS</h2>
         </Link>
       </div>

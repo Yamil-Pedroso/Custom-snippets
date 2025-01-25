@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import { FaGithub, FaGitlab, FaBitbucket, FaGoogle } from 'react-icons/fa';
 
 // Estilos
@@ -44,10 +45,15 @@ const IntegrationCard = styled.div`
   }
 `;
 
-const IntegrationIcon = styled.div`
+const IntegrationIcon = styled(motion.div)<{ hoverColor: string }>`
   font-size: 3rem; /* Tamaño del ícono */
   margin-bottom: 0.5rem;
-  color: #333;
+  color: #333; /* Color inicial */
+
+  &:hover {
+    color: ${({ hoverColor }) => hoverColor}; /* Toma el color característico al hacer hover */
+    transition: color 0.3s ease; /* Transición suave */
+  }
 `;
 
 const IntegrationName = styled.p`
@@ -56,12 +62,12 @@ const IntegrationName = styled.p`
 `;
 
 const Integrations: React.FC = () => {
-  // Lista de integraciones con componentes React para los íconos
+  // Lista de integraciones con componentes React para los íconos y colores característicos
   const integrations = [
-    { name: 'GitHub', icon: <FaGithub /> },
-    { name: 'GitLab', icon: <FaGitlab /> },
-    { name: 'Bitbucket', icon: <FaBitbucket /> },
-    { name: 'Google', icon: <FaGoogle /> },
+    { name: 'GitHub', icon: FaGithub, color: '#181717' }, // Negro GitHub
+    { name: 'GitLab', icon: FaGitlab, color: '#fc6d26' }, // Naranja GitLab
+    { name: 'Bitbucket', icon: FaBitbucket, color: '#0052cc' }, // Azul Bitbucket
+    { name: 'Google', icon: FaGoogle, color: '#4285f4' }, // Azul Google
   ];
 
   return (
@@ -71,8 +77,22 @@ const Integrations: React.FC = () => {
       <IntegrationsList>
         {integrations.map((integration, index) => (
           <IntegrationCard key={index}>
-            {/* Renderiza el ícono directamente */}
-            <IntegrationIcon>{integration.icon}</IntegrationIcon>
+            {/* Ícono animado con colores personalizados */}
+            <IntegrationIcon
+              as={motion.div}
+              hoverColor={integration.color} // Color para hover
+              initial={{ color: '#333' }} // Color inicial
+              whileInView={{
+                color: [integration.color], // Cambia al color de la app y regresa al gris
+              }}
+              viewport={{ once: false }}
+              transition={{
+                duration: 1.5, // Duración total del ciclo
+                delay: index * 0.3, // Retraso para animar secuencialmente
+              }}
+            >
+              <integration.icon />
+            </IntegrationIcon>
             <IntegrationName>{integration.name}</IntegrationName>
           </IntegrationCard>
         ))}

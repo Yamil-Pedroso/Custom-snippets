@@ -1,55 +1,37 @@
-import { FeaturesContainer } from "./styles";
-import { RiOrganizationChart, RiGlobalLine } from "react-icons/ri";
-import { MdOutlineSecurity } from "react-icons/md";
-
-//Save snippets organized by categories.
-//Support for multiple programming languages (with language icons).
-//Advanced snippet search functionality.
-//Share snippets with colleagues or teams.
-//Syntax-highlighted editor.
+import { FeaturesContainer, FeaturesWrapper, Feature } from "./styles";
+import { features } from "../../types/Types";
+import { motion } from "framer-motion";
 
 const Features = () => {
   return (
     <FeaturesContainer>
-      <h2>Key Features</h2>
-      <div>
-        <div>
-          <RiOrganizationChart className="icon" />
-          <p>Intuitive Organization</p>
-        </div>
-        <div>
-          <RiGlobalLine className="icon" />
-          <p>Global Sharing</p>{" "}
-        </div>
-        <div>
-          <MdOutlineSecurity className="icon" />
-          <p>Guaranteed Security</p>
-        </div>
-
-        <div>
-          <p>Save snippets organized by categories.</p>
-        </div>
-        </div>
-
-        <div>
-        <div>
-          <p>
-            Support for multiple programming languages (with language icons).
-          </p>
-        </div>
-
-        <div>
-          <p>Advanced snippet search functionality.</p>
-        </div>
-
-        <div>
-          <p>Share snippets with colleagues or teams.</p>
-        </div>
-
-        <div>
-          <p>Syntax-highlighted editor.</p>
-        </div>
-      </div>
+      <h2>Features</h2>
+      <FeaturesWrapper>
+        {features.map((feature, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 50 }} // Estado inicial
+            whileInView={{ opacity: 1, y: 0 }} // Animación al entrar en el viewport
+            viewport={{ once: false, amount: 0.2 }} // Ejecutar la animación solo una vez cuando esté al 20% visible
+            transition={{
+              duration: 0.6,
+              delay: index * 0.2, // Retraso para animar secuencialmente
+              ease: "easeOut",
+            }}
+          >
+            <Feature>
+              <div>
+                {typeof feature.icon === "string" ? (
+                  <img src={feature.icon} alt={feature.content} />
+                ) : (
+                  <feature.icon className="icon" />
+                )}
+              </div>
+              <p>{feature.content}</p>
+            </Feature>
+          </motion.div>
+        ))}
+      </FeaturesWrapper>
     </FeaturesContainer>
   );
 };

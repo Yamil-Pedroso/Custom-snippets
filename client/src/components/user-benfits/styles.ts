@@ -2,33 +2,57 @@ import styled from "styled-components";
 
 export const UserBenefitsContainer = styled.section`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  padding: 2rem;
+  padding: 3rem 2rem;
   margin: 2rem auto;
-  border-radius: 8px;
-  position: relative;
-  background-color: ${({ theme }) => theme.colors.bgBody};
-  gap: 2rem;
-
-    p {
-        color: #1b1b1b;
-        font-size: 1.5rem;
-        font-weight: 400;
-        margin-bottom: .7rem;
-        padding: 1.5rem;
-        background-color: #ffffff;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        border-radius: 10rem;
-        border-bottom: 2px solid #ff7225;
-    }
+  background-color: #f9f9f9;
+  border-radius: 16px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
 export const HeaderText = styled.div`
-    h2 {
-        text-align: center;
-        color: #1b1b1b;
-        font-size: 2rem;
-        margin-bottom: 1rem;
-    }
-    `;
+  margin-bottom: 2rem;
+
+  h2 {
+    font-size: 2.5rem;
+    color: #1b1b1b;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+  }
+`;
+
+export const BenefitList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+`;
+
+export const BenefitItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  p {
+    font-size: 1.2rem;
+    color: #1b1b1b;
+    margin: 0;
+  }
+`;

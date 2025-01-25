@@ -1,75 +1,84 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
+// Animación para el cohete (movimiento hacia arriba y abajo)
+const liftOff = keyframes`
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-15px) scale(1.05);
+  }
+`;
+
+// Contenedor principal del Hero
 export const HeroContainer = styled.div`
   width: 100%;
-  height: 50rem;
+  height: 30rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${({ theme }) => theme.colors.bgBody};
+  position: relative;
+  background: url("https://img.freepik.com/free-vector/dark-blue-memphis-blog-banner-template_53876-98946.jpg?uid=R30358756&ga=GA1.1.978746274.1729116055&semt=ais_hybrid")
+    no-repeat center center;
+  background-size: cover;
+  color: #fff;
 `;
 
+// Contenido del Hero
 export const HeroContent = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-around;
-  width: 80%;
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 2; /* Para asegurarse de que el texto esté por encima del fondo */
+  padding: 2rem;
+  max-width: 800px;
 `;
 
+// Texto del lado izquierdo
 export const HeroLeft = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: flex-start;
-  padding: 0 2rem;
-  width: 50%;
-  height: 50vh;
+  gap: 1rem;
 
   h1 {
-    color: #333;
-    font-size: 4rem;
-    margin-bottom: 1rem;
+    font-size: 3rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Sombra para destacar */
   }
 
   p {
-    color: #333;
-    margin-bottom: 1rem;
-    font-size: 1.3rem;
-    font-weight: bold;
-  }
-
-  button {
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 5px;
-    background-color: #ff7225;
-    color: #fff;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
+    font-size: 1.2rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Sombra para destacar */
   }
 `;
 
-export const HeroRight = styled.div`
-  width: 40%;
-  height: 40rem;
-  background-color: #ffffff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 4px solid #333333;
-  box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+// Imagen del cohete con animación
+export const RocketImage = styled.img`
+  animation: ${liftOff} 2.5s infinite ease-in-out;
+`;
 
-  img {
-    height: 90%;
-    object-fit: cover;
+// Botón animado
+export const HeroButton = styled.button`
+  margin-top: 0rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #ff7225;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0px 4px 0px #6a458d, 0px 8px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
 
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 0px #ff7225, 0px 10px 20px rgba(0, 0, 0, 0.3);
   }
 
-  h1 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
+  &:active {
+    transform: translateY(2px);
+    box-shadow: 0px 2px 0px #ff7225, 0px 4px 10px rgba(0, 0, 0, 0.2);
   }
 `;
