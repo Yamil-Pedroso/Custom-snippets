@@ -17,6 +17,14 @@ export const FeaturesContainer = styled.div`
     font-weight: bold;
     margin-bottom: 2rem;
     text-align: center;
+
+    @media (max-width: 768px) {
+      font-size: 2rem;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 1.8rem;
+    }
   }
 `;
 
@@ -32,6 +40,17 @@ export const FeaturesWrapper = styled.div`
   background-color: #f9f9f9;
   border-radius: 3rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 1024px) {
+    width: 90%;
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 1rem;
+  }
 `;
 
 export const Feature = styled.div`
@@ -58,6 +77,14 @@ export const Feature = styled.div`
     align-items: center;
     justify-content: center;
     text-align: center;
+
+    @media (max-width: 768px) {
+      font-size: 1rem;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 0.9rem;
+    }
   }
 
   div {
@@ -73,6 +100,16 @@ export const Feature = styled.div`
       width: 2.5rem;
       height: 2.5rem;
       color: #fff;
+
+      @media (max-width: 768px) {
+        width: 2rem;
+        height: 2rem;
+      }
+
+      @media (max-width: 480px) {
+        width: 1.8rem;
+        height: 1.8rem;
+      }
     }
   }
 
@@ -80,5 +117,17 @@ export const Feature = styled.div`
     transform: translateY(-5px);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  @media (max-width: 768px) {
+    width: 12rem;
+    min-height: 14rem;
+    padding: 1rem;
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    min-height: 12rem;
+    padding: 0.8rem;
   }
 `;

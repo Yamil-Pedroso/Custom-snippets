@@ -40,8 +40,7 @@ export const Input = styled.input`
   outline: none;
 
   &:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    border-color: #ff7225;
   }
 `;
 
@@ -54,8 +53,7 @@ export const Textarea = styled.textarea`
   resize: none;
 
   &:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    border-color: #ff7225;
   }
 `;
 
@@ -63,7 +61,7 @@ export const Button = styled.button`
   padding: 10px 20px;
   font-size: 16px;
   color: #fff;
-  background-color: #4b692a;
+  background-color: #ff7225;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -71,7 +69,7 @@ export const Button = styled.button`
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #fe8646;
   }
 `;
 
