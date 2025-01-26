@@ -50,6 +50,7 @@ export const HeroContainer = styled.div`
 
 // Contenedor del lado izquierdo
 export const HeroWrapper = styled.div`
+  
   h1 {
     font-size: 3rem;
     font-weight: bold;
