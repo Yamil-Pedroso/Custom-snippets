@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
+// Estilos para el contenedor principal del Navbar (Desktop)
 export const NavbarContainer = styled.nav`
   display: flex;
   justify-content: space-between;
@@ -14,21 +15,11 @@ export const NavbarContainer = styled.nav`
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 
   @media (max-width: 960px) {
-    flex-direction: column;
-    padding: 1rem;
-  }
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0.5rem 1rem;
-  }
-
-  @media (max-width: 480px) {
-    padding: 0.5rem;
+    display: none;
   }
 `;
 
+// Estilos para el contenedor del logo
 export const LogoContainer = styled.div`
   display: flex;
   align-items: center;
@@ -62,6 +53,7 @@ export const LogoContainer = styled.div`
   }
 `;
 
+// Estilos para los enlaces de navegación
 export const NavLinks = styled.div`
   display: flex;
   align-items: center;
@@ -83,6 +75,7 @@ export const NavLinks = styled.div`
   }
 `;
 
+// Estilos individuales para los enlaces
 export const NavItem = styled(Link)<{ active: boolean }>`
   text-decoration: none;
   color: ${({ active }) => (active ? "#ff7225" : "#fff")};
@@ -103,6 +96,7 @@ export const NavItem = styled(Link)<{ active: boolean }>`
   }
 `;
 
+// Estilos para el contenedor del User Menu
 export const UserMenu = styled.div`
   display: flex;
   align-items: center;
@@ -141,6 +135,7 @@ export const UserMenu = styled.div`
   }
 `;
 
+// Estilos para el avatar del usuario
 export const Avatar = styled.div`
   width: 40px;
   height: 40px;
@@ -165,6 +160,7 @@ export const Avatar = styled.div`
   }
 `;
 
+// Estilos para el botón de Logout
 export const LogoutButton = styled.button`
   background-color: #ff7225;
   color: #fff;
@@ -195,3 +191,82 @@ export const LogoutButton = styled.button`
     font-size: 0.85rem;
   }
 `;
+
+// Estilos para el Navbar en Mobile
+export const NavbarMobileContainer = styled.div`
+  display: none;
+
+  @media (max-width: 960px) {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #2d3133;
+    color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+`;
+
+// Estilos para el wrapper del icono del menú en mobile
+export const MenuWrapper = styled.div`
+  cursor: pointer;
+`;
+
+// Estilos para el menú desplegable en mobile
+export const BoxItem = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  position: absolute;
+  top: 4rem;
+  left: 0;
+  background-color: #2d3133;
+  border-radius: 8px;
+  z-index: 1000;
+  transition: transform 0.3s;
+`;
+
+export const UserMenuContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+
+  @media (max-width: 960px) {
+    flex-direction: column;
+    gap: 1rem;
+  }
+`;
+
+// Contenedor del avatar del usuario
+export const AvatarContainer = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
+
+// Estilo del texto del nombre de usuario
+export const UsernameText = styled.h3`
+  font-size: 1rem;
+  font-weight: 400;
+
+  span {
+    color: #ff7225;
+    font-weight: bold;
+  }
+`;
+
+
