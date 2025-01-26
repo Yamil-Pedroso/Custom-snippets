@@ -222,12 +222,11 @@ export const BoxItem = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding: 1rem;
+  padding: 2rem;
   position: absolute;
   top: 4rem;
   left: 0;
   background-color: #2d3133;
-  border-radius: 8px;
   z-index: 1000;
   transition: transform 0.3s;
 `;
