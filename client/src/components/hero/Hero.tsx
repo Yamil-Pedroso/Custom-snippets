@@ -2,11 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   HeroContainer,
-  HeroContent,
-  HeroLeft,
+  HeroWrapper,
   HeroButton,
   RocketImageWrapper,
   RocketImage,
+  TextWrapper,
+  Content,
 } from "./styles";
 import images from "../../assets";
 
@@ -26,7 +27,7 @@ const Hero = () => {
     if (!isClicked) {
       setIsHovered(false);
     }
-  }
+  };
 
   const handleClick = () => {
     setIsClicked(true);
@@ -38,43 +39,27 @@ const Hero = () => {
 
   return (
     <HeroContainer>
-      <HeroContent>
-        <HeroLeft>
-          <div
-            style={{
-              display: "flex",
-              gap: "1rem",
-              textAlign: "center",
-            }}
-          >
-            <div>
-              <h1>Transform Your Ideas Into Unique Snippets</h1>
-              <p
-                style={{
-                  fontSize: "1.3rem",
-                  color: "#7680e4",
-                }}
-              >
-                Create, share, and organize your code snippets with ease.
-              </p>
-            </div>
-            <RocketImageWrapper
-              className={
-                flyOutViewPort 
-                  ? "flyOutViewPort"
-                  : isHovered 
-                  ? "takeoffRocket"
-                  : ""
-              }
-            >
-              <RocketImage
+      <HeroWrapper>
+        <Content>
+          <TextWrapper>
+            <h1>Transform Your Ideas Into Unique Snippets</h1>
+            <p>Create, share, and organize your code snippets with ease.</p>
+          </TextWrapper>
 
-                src={images.rocket}
-                alt="Rocket"
-                width="200"
-              />
-            </RocketImageWrapper>
-          </div>
+          <RocketImageWrapper
+            className={
+              flyOutViewPort
+                ? "flyOutViewPort"
+                : isHovered
+                ? "takeoffRocket"
+                : ""
+            }
+          >
+            <RocketImage src={images.rocket} alt="Rocket" />
+          </RocketImageWrapper>
+        </Content>
+
+        <div className="button-wrapper">
           <HeroButton
             onMouseEnter={handleHover}
             onMouseLeave={handleLeave}
@@ -82,8 +67,8 @@ const Hero = () => {
           >
             Start Now
           </HeroButton>
-        </HeroLeft>
-      </HeroContent>
+        </div>
+      </HeroWrapper>
     </HeroContainer>
   );
 };

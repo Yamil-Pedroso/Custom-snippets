@@ -1,12 +1,14 @@
 import React from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { toast } from "sonner";
+import { NavbarContainer } from "./styles";
+import NavbarMobile from "./NavbarMobile";
+import UserMenu from "./UserMenu";
 import { useUserContext } from "../../context/userContext";
 import { logoutUser } from "../../services/UserService";
-import { FaUser } from "react-icons/fa";
-import { toast } from "sonner";
 
 const Navbar: React.FC = () => {
-  const { currentUser, setCurrentUser } = useUserContext(); // Obtenemos el usuario actual del contexto
+  const { currentUser, setCurrentUser } = useUserContext();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -15,12 +17,12 @@ const Navbar: React.FC = () => {
   const handleLogout = async () => {
     try {
       await logoutUser();
-      localStorage.removeItem("authToken"); // Eliminar token del localStorage
-      setCurrentUser(null); // Limpiar el contexto del usuario
+      localStorage.removeItem("authToken");
+      setCurrentUser(null);
       toast.success("Logged out successfully", {
         className: "toast",
       });
-      navigate("/login"); // Redirigir al login
+      navigate("/login");
     } catch (error) {
       console.error("Error logging out:", error);
     }
@@ -32,107 +34,27 @@ const Navbar: React.FC = () => {
   });
 
   return (
-    <nav
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "1rem 2rem",
-        backgroundColor: "#2d3133",
-        color: "#fff",
-      }}
-    >
-      <div
-         style={{ display: "flex" }}
-      >
-        <Link to="/" style={{ color: "#fff", textDecoration: "none", display: "flex", alignItems: "center" }}>
-
-          <h2 style={{ color: "#ff7225"}}>SNIPPETS</h2>
-        </Link>
-      </div>
-
-      {isAuthenticated ? (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "1.5rem",
-          }}
-        >
-          <div
-            style={{
-              width: "40px",
-              height: "40px",
-              borderRadius: "50%",
-              overflow: "hidden",
-            }}
-          >
-            <img
-              src={currentUser?.avatar}
-              alt="User avatar"
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-              }}
-            />
-          </div>
-          <h3>
-            {currentUser?.isAdmin ? "Admin" : "User"} : <span style={{ color: "#ff7225" }}>{currentUser?.username}</span>
-          </h3>
-          <Link to="/profile" style={getLinkStyle("/profile")}>
-            Profile
-          </Link>
-          <Link
-            to="/dashboard"
-            style={getLinkStyle("/dashboard")}
-          >
-            Dashboard
-          </Link>
-          {currentUser?.isAdmin && (
-            <Link
-              to="/user-management"
-              style={getLinkStyle("/user-management")}
-            >
-              Admin Panel
-            </Link>
-          )}
-          <button
-            onClick={handleLogout}
-            style={{
-              backgroundColor: "#333333",
-              color: "#fff",
-              border: "none",
-              padding: "0.5rem 1rem",
-              cursor: "pointer",
-            }}
-          >
-            Logout
-          </button>
-        </div>
-      ) : (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "1.5rem",
-          }}
-        >
-          <FaUser
-           style={{ color: "#ff7225" }}
-          size={24} />
-          <Link
-            to="/register"
-            style={{ color: "#fff", textDecoration: "none" }}
-          >
-            Register
-          </Link>
-          <Link to="/login" style={{ color: "#fff", textDecoration: "none" }}>
-            Login
+    <>
+      <NavbarMobile
+        isAuthenticated={isAuthenticated}
+        handleLogout={handleLogout}
+        getLinkStyle={getLinkStyle}
+        currentUser={currentUser}
+      />
+      <NavbarContainer>
+        <div>
+          <Link to="/" style={{ color: "#fff", textDecoration: "none" }}>
+            <h2 style={{ color: "#ff7225" }}>SNIPPETS</h2>
           </Link>
         </div>
-      )}
-    </nav>
+        <UserMenu
+          isAuthenticated={isAuthenticated}
+          currentUser={currentUser}
+          handleLogout={handleLogout}
+          getLinkStyle={getLinkStyle}
+        />
+      </NavbarContainer>
+    </>
   );
 };
 
