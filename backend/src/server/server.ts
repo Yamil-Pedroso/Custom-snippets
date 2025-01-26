@@ -46,7 +46,7 @@ app.use(
   )
 
   app.use(cors({
-    origin: process.env.CLIENT_URL,
+    origin: [process.env.CLIENT_URL || "http://localhost:5173", "https://custom-snippetsv1.netlify.app/"],
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
