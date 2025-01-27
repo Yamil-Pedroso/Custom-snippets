@@ -7,6 +7,7 @@ import cookieSession from 'cookie-session';
 import  { v2 as cloudinary } from 'cloudinary';
 import dotenv from "dotenv";
 import componentRoutes from "../routes/componentRoutes";
+import multer from "multer";
 import userRoutes from "../routes/userRoutes";
 import connectDB from '../config/db';
 
@@ -51,6 +52,19 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
 }));
+
+// Middleware to handle errors when uploading files
+app.use((err: any, req: any, res: any, next: any) => {
+  if (err instanceof multer.MulterError) {
+      // A Multer error occurred when uploading
+      return res.status(400).json({ message: err.message });
+  } else if (err) {
+      // An unknown error occurred when uploading
+      return res.status(400).json({ message: err.message });
+  }
+  next();
+});
+
 
 app.use(express.json());
 app.use("/api/v1/components", componentRoutes);

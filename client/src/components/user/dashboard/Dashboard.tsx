@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useComponentContext } from "../../../context/componentContext";
 import { deleteComponent } from "../../../services/ComponentService";
 import { DashboardContainer, SnippetCard } from "./styles";
+import { toast } from "sonner";
 
 const Dashboard: React.FC = () => {
   const { components, setComponents } = useComponentContext();
@@ -12,7 +13,9 @@ const Dashboard: React.FC = () => {
       try {
         await deleteComponent(id);
         setComponents((prev) => prev.filter((component) => component.id !== id));
-        alert("Snippet deleted successfully!");
+        toast.success("Snippet deleted successfully", {
+          className: "toast",
+        });
       } catch (error) {
         console.error("Error deleting snippet:", error);
         alert("Failed to delete snippet. Please try again.");

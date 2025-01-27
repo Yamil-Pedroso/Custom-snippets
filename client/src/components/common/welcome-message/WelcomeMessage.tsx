@@ -1,14 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { WelcomeMessageContainer, BtnWrapper } from "./styles";
 import { IoIosClose } from "react-icons/io";
 import { motion, AnimatePresence } from "framer-motion";
+import { useUserContext } from "../../../context/userContext";
+import { Link } from "react-router-dom";
 
 const WelcomeMessage = () => {
-  const [showWelcomeMessage, setShowWelcomeMessage] = useState(true);
+  const { currentUser, loading } = useUserContext();
+  const [showWelcomeMessage, setShowWelcomeMessage] = useState(false);
+
+  useEffect(() => {
+    if (!currentUser && !loading) {
+      setShowWelcomeMessage(true);
+    }
+  }, [currentUser, loading]);
 
   const handleClose = () => {
     setShowWelcomeMessage(false);
   };
+
+  if (loading) {
+    return null;
+  }
+
+  if (currentUser) {
+    return null;
+  }
 
   return (
     <AnimatePresence>
@@ -24,7 +41,9 @@ const WelcomeMessage = () => {
           <p>Create, share, and organize your code snippets with ease.</p>
 
           <BtnWrapper>
-            <button>Sign up with email</button>
+            <Link to="/register">
+              <button>Sign up with email</button>
+            </Link>
           </BtnWrapper>
 
           <IoIosClose

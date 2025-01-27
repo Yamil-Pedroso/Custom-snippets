@@ -13,7 +13,18 @@ import {
 import { protect, admin } from "../middlewares/authMiddleware";
 import multer from "multer"
 
-const upload = multer({ dest: 'uploads/' })
+const storage = multer.memoryStorage();
+
+const upload = multer({
+    storage,
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype.startsWith('image/')) {
+            cb(null, true);
+        } else {
+            cb(new Error('Only image files are allowed!'));
+        }
+    },
+});
 
 const router = Router();
 

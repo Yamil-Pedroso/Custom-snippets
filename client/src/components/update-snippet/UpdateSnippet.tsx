@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useComponentContext } from "../../context/componentContext";
 import { updateComponent, getComponentById } from "../../services/ComponentService";
+import { toast } from "sonner";
 
 const UpdateSnippet: React.FC = () => {
     const { id } = useParams<{ id: string }>(); // Obtenemos el ID desde la URL
@@ -66,7 +67,9 @@ const UpdateSnippet: React.FC = () => {
                 prev.map((component) => (component.id === id ? response : component))
             );
 
-            alert("Snippet updated successfully!");
+            toast.success("Snippet updated successfully", {
+                className: "toast",
+            });
             navigate("/"); // Navega de regreso a la lista
         } catch (error) {
             console.error("Error updating snippet:", error);

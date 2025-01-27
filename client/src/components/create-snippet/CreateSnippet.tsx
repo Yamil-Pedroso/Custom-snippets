@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useComponentContext } from "../../context/componentContext";
 import { createComponent } from "../../services/ComponentService";
+import { toast } from "sonner";
 import {
   Container,
   Title,
@@ -47,7 +48,9 @@ const CreateSnippet: React.FC = () => {
 
       const createdSnippet = await createComponent(newSnippet);
       setComponents((prev) => [...prev, createdSnippet]);
-      alert("Snippet created successfully!");
+      toast.success("Snippet created successfully", {
+        className: "toast",
+      });
       navigate("/");
     } catch (error) {
       console.error("Error creating snippet:", error);

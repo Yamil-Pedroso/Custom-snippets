@@ -23,11 +23,29 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
 
         let myAvatar = 'https://res.cloudinary.com/ddgf7ijdc/image/upload/v1709338082/userAvatart/Avatars/ez5hjkxgtf0mcnjytx0c.jpg';
         if (req.file) {
-
-            const result = await cloudinary.uploader.upload(req.file.path, {
+            const result = await cloudinary.uploader.upload_stream({
                 folder: 'userAvatars/Avatars',
+            }, (error, result) => {
+                if (error) {
+                    throw new CustomError('Error uploading avatar', 500);
+                }
+                if (result) {
+                    myAvatar = result.secure_url;
+                }
             });
-            myAvatar = result.secure_url;
+
+            const stream = cloudinary.uploader.upload_stream({
+                folder: 'userAvatars/Avatars',
+            }, (error, result) => {
+                if (error) {
+                    throw new CustomError('Error uploading avatar', 500);
+                }
+                if (result) {
+                    myAvatar = result.secure_url;
+                }
+            });
+
+            stream.end(req.file.buffer); // Sube el buffer directamente a Cloudinary
         }
 
 
