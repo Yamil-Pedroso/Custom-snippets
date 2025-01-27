@@ -10,31 +10,33 @@ import {
   Content,
 } from "./styles";
 import images from "../../assets";
+import { useUserContext } from "../../context/userContext";
 
 const Hero = () => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isClicked, setIsClicked] = useState(false);
-  const [flyOutViewPort, setFlyOutViewPort] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false); 
+  const { currentUser } = useUserContext();
   const navigate = useNavigate();
 
   const handleHover = () => {
-    if (!isClicked) {
+    if (!isAnimating) {
       setIsHovered(true);
     }
   };
 
   const handleLeave = () => {
-    if (!isClicked) {
+    if (!isAnimating) {
       setIsHovered(false);
     }
   };
 
   const handleClick = () => {
-    setIsClicked(true);
-    setFlyOutViewPort(true);
+    setIsAnimating(true); 
+    const destination = currentUser ? "/dashboard" : "/register";
+
     setTimeout(() => {
-      navigate("/register");
-    }, 2000);
+      navigate(destination);
+    }, 2000); 
   };
 
   return (
@@ -48,7 +50,7 @@ const Hero = () => {
 
           <RocketImageWrapper
             className={
-              flyOutViewPort
+              isAnimating
                 ? "flyOutViewPort"
                 : isHovered
                 ? "takeoffRocket"
@@ -65,7 +67,7 @@ const Hero = () => {
             onMouseLeave={handleLeave}
             onClick={handleClick}
           >
-            Start Now
+           {currentUser ? "Go to Dashboard" : "Get Started"}
           </HeroButton>
         </div>
       </HeroWrapper>

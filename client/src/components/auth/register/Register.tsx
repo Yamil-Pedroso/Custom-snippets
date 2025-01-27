@@ -132,8 +132,27 @@ const Register: React.FC = () => {
             accept="image/*"
           />
         </FormGroup>
-
+   
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          
+          }}
+        >
         <Button type="submit">Register</Button>
+        <p 
+          style={{ 
+            color: "#ff7225", 
+            cursor: "pointer", 
+            fontSize: "1.2rem",
+            textDecoration: "underline",
+            fontWeight: "bold"
+
+          }}
+        onClick={() => navigate("/login")}> Login</p>
+      </div>
       </Form>
     </Container>
   );

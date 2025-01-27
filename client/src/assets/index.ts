@@ -4,6 +4,7 @@ import bg_2 from './images/png/bg.png'
 import demoSnippets from './videos/demo-snippets.mp4'
 import logo from './images/png/logo.png'
 import rocket from './images/png/rocket.png'
+import charFront from './images/svg/char-front.svg'
 
 interface IImages {
     [key: string]: string
@@ -15,7 +16,8 @@ const images: IImages = {
     bg_2,
     demoSnippets,
     logo,
-    rocket
+    rocket,
+    charFront
 }
 
 export default images
