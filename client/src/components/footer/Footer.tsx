@@ -151,8 +151,8 @@ const Footer: React.FC = () => {
         <p>
           &copy; {new Date().getFullYear()} Custom Snippets. All Rights Reserved. Built with
             <FaHeart style={{ color: '#ff7225', marginLeft: ".3rem", marginRight: ".3rem" }} />
-           by{'YamNextGen'}.
-          <a href="https://yourwebsite.com">Your Name</a>.
+           by
+          <a href="https://yampe-softwaredev.netlify.app/"> YamNextGen</a>.
         </p>
       </FooterBottom>
     </FooterContainer>
