@@ -8,6 +8,8 @@ export interface IComponent {
     codeSnippet: string;
     tags: string[];
     createdAt: string;
+    isPublic: boolean;
+    shareUrl: string;
 }
 
 export const getUserComponents = async (): Promise<IComponent[]> => { 
@@ -78,3 +80,13 @@ export const searchComponents = async (query: string): Promise<IComponent[]> => 
         throw error;
     }
 }
+
+export const toggleComponentVisibility = async (id: string, isPublic: boolean): Promise<IComponent> => {
+    try {
+        const response = await axios.put<IComponent>(`/components/${id}/share`, { isPublic });
+        return response.data;
+    } catch (error) {
+        console.error("Error updating visibility:", error);
+        throw error;
+    }
+};

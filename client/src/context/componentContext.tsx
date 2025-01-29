@@ -1,9 +1,14 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
-import { getUserComponents, IComponent } from "../services/ComponentService";
+import {
+  getUserComponents,
+  IComponent,
+  toggleComponentVisibility,
+} from "../services/ComponentService";
 
 interface ComponentContextProps {
   components: IComponent[];
   setComponents: React.Dispatch<React.SetStateAction<IComponent[]>>;
+  updateVisibility: (id: string, isPublic: boolean) => Promise<void>;
 }
 
 const ComponentContext = createContext<ComponentContextProps | undefined>(
@@ -20,7 +25,7 @@ export const ComponentProvider: React.FC<{ children: ReactNode }> = ({
     const fetchComponents = async () => {
       const token = localStorage.getItem("authToken");
       if (!token) return; // No realizar la solicitud si no hay token
-  
+
       try {
         const data = await getUserComponents();
         setComponents(data);
@@ -29,13 +34,34 @@ export const ComponentProvider: React.FC<{ children: ReactNode }> = ({
         setError("Failed to fetch components");
       }
     };
-  
+
     fetchComponents();
   }, []);
-  
+
+  const updateVisibility = async (id: string, isPublic: boolean) => {
+    try {
+      const updatedComponent = await toggleComponentVisibility(id, isPublic);
+
+      setComponents((prev) =>
+        prev.map((comp) =>
+          comp.id === id
+            ? {
+                ...comp,
+                isPublic: updatedComponent.isPublic,
+                shareUrl: updatedComponent.shareUrl,
+              }
+            : comp
+        )
+      );
+    } catch (error) {
+      console.error("Error toggling visibility:", error);
+    }
+  };
 
   return (
-    <ComponentContext.Provider value={{ components, setComponents }}>
+    <ComponentContext.Provider
+      value={{ components, setComponents, updateVisibility }}
+    >
       {error ? <div>{error}</div> : children}
     </ComponentContext.Provider>
   );

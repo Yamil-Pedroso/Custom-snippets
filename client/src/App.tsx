@@ -12,6 +12,7 @@ import Navbar from "./components/navbar/Navbar";
 import ComponentList from "./components/list-comp/ComponentList";
 import CreateSnippet from "./components/create-snippet/CreateSnippet";
 import UpdateSnippet from "./components/update-snippet/UpdateSnippet";
+import PublicSnippet from "./components/public-snippets/PublicSnippets";
 
 import Login from "./components/auth/login/Login";
 import Register from "./components/auth/register/Register";
@@ -48,6 +49,8 @@ const App: React.FC = () => {
               <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
 
                 <Route path="/user-management" element={<AdminRoute><UserManagementPage /></AdminRoute>} />
+                <Route path="/snippets/:id" element={<PublicSnippet />} />
+
             </Routes>
           </Router>
         </ThemeProvider>

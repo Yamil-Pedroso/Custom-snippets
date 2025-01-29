@@ -6,7 +6,9 @@ interface IComponent {
     codeSnippet: string;
     tags: string[];
     createdAt?: Date;
-    userId: Types.ObjectId; // Relación con el usuario
+    userId: Types.ObjectId; 
+    isPublic?: boolean;
+    shareUrl?: string;
 }
 
 const ComponentSchema = new Schema<IComponent>({
@@ -22,7 +24,17 @@ const ComponentSchema = new Schema<IComponent>({
         }
     },
     createdAt: { type: Date, default: Date.now },
-    userId: { type: Schema.Types.ObjectId, ref: "User", required: true }, // Relación con el usuario
+    userId: { type: Schema.Types.ObjectId, ref: "User", required: true }, 
+    isPublic: { type: Boolean, default: false },
+    shareUrl: { type: String, unique: true }
+});
+
+// Generar URL única al guardar un snippet público
+ComponentSchema.pre("save", function (next) {
+    if (this.isPublic && !this.shareUrl) {
+        this.shareUrl = `${process.env.FRONTEND_URL}/snippets/${this._id}`;
+    }
+    next();
 });
 
 // Cambia cómo se serializa el modelo a JSON

@@ -9,7 +9,9 @@ interface UserRequest extends Request {
 
 export const getComponents = async (req: Request, res: Response) => {
     try {
-        const components = await Component.find();
+        const components = await Component.find({
+            $or: [ { userId: req.user?.id }, { isPublic: true } ]
+        });
         res.status(200).json(components);
     } catch (error) {
         res.status(500).json({ message: "Error retrieving components", error });
@@ -20,7 +22,10 @@ export const getSingleComponent = async (req: UserRequest, res: Response) => {
     const { id } = req.params;
 
     try {
-        const component = await Component.findOne({ _id: id, userId: req.user?.id });
+        const component = await Component.findOne({ 
+            _id: id, userId: req.user?.id,
+            $or: [ { userId: req.user?.id }, { isPublic: true } ]
+        });
 
         if (!component) {
             res.status(404).json({ message: "Component not found" });
@@ -131,3 +136,32 @@ export const searchComponents = async (req: UserRequest, res: Response) => {
         res.status(500).json({ message: "Error searching components", error });
     }
 };
+
+export const toggleComponentVisibility = async (req: UserRequest, res: Response): Promise<void> => {
+    const { id } = req.params;
+    const { isPublic } = req.body;
+
+    try {
+        const component = await Component.findOne({ _id: id, userId: req.user?.id });
+
+        if (!component) {
+            res.status(404).json({ message: "Component not found or not authorized" });
+            return;
+        }
+
+        component.isPublic = isPublic;
+
+        if (isPublic) {
+            const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173"; // Usa un fallback
+            component.shareUrl = `${frontendUrl}/snippets/${component._id}`;
+        } else {
+            component.shareUrl = undefined;
+        }
+
+        await component.save();
+        res.status(200).json(component);
+    } catch (error) {
+        res.status(500).json({ message: "Error updating visibility", error });
+    }
+};
+
