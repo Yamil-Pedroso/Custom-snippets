@@ -11,15 +11,19 @@ import {
   Label,
   Input,
   Textarea,
+  Select, // ⬅️ Nuevo componente para el select
   Button,
   ErrorMessage,
 } from "./styles";
+
+const categories = ["JavaScript", "Python", "CSS", "React", "Backend", "Database", "Others"];
 
 const CreateSnippet: React.FC = () => {
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [codeSnippet, setCodeSnippet] = useState<string>("");
   const [tags, setTags] = useState<string>("");
+  const [category, setCategory] = useState<string>("Others"); // ⬅️ Estado para la categoría
   const { setComponents } = useComponentContext();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -29,6 +33,7 @@ const CreateSnippet: React.FC = () => {
     if (!name.trim()) return "Name is required!";
     if (!codeSnippet.trim()) return "Code snippet is required!";
     if (!tags.trim()) return "At least one tag is required!";
+    if (!category.trim()) return "Category is required!";
     return null;
   };
 
@@ -39,11 +44,15 @@ const CreateSnippet: React.FC = () => {
     if (errorMsg) return setError(errorMsg);
 
     try {
+      setLoading(true);
       const newSnippet = {
         name,
         description,
         codeSnippet,
         tags: tags.split(",").map((tag) => tag.trim()),
+        category, // ⬅️ Se envía la categoría al backend
+        isPublic: true, // or false, depending on your requirement
+        shareUrl: "", // or any default value
       };
 
       const createdSnippet = await createComponent(newSnippet);
@@ -104,6 +113,15 @@ const CreateSnippet: React.FC = () => {
             onChange={(e) => setTags(e.target.value)}
             required
           />
+        </FormGroup>
+        {/* 🆕 Agregamos el selector de categoría */}
+        <FormGroup>
+          <Label htmlFor="category">Category:</Label>
+          <Select id="category" value={category} onChange={(e) => setCategory(e.target.value)}>
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>{cat}</option>
+            ))}
+          </Select>
         </FormGroup>
         <Button type="submit">Create Snippet</Button>
       </Form>

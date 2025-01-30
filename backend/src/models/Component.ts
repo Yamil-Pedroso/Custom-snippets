@@ -5,8 +5,9 @@ interface IComponent {
     description?: string;
     codeSnippet: string;
     tags: string[];
+    category?: string;
     createdAt?: Date;
-    userId: Types.ObjectId; 
+    userId: Types.ObjectId;
     isPublic?: boolean;
     shareUrl?: string;
 }
@@ -15,6 +16,7 @@ const ComponentSchema = new Schema<IComponent>({
     name: { type: String, required: true, trim: true, minlength: 3 },
     description: { type: String, trim: true, maxlength: 500 },
     codeSnippet: { type: String, required: true, minlength: 10 },
+    category: { type: String, required: true, enum: ["JavaScript", "Python", "CSS", "React", "Backend", "Database", "Others"] },
     tags: {
         type: [String],
         required: true,
@@ -24,7 +26,7 @@ const ComponentSchema = new Schema<IComponent>({
         }
     },
     createdAt: { type: Date, default: Date.now },
-    userId: { type: Schema.Types.ObjectId, ref: "User", required: true }, 
+    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     isPublic: { type: Boolean, default: false },
     shareUrl: { type: String, unique: true }
 });

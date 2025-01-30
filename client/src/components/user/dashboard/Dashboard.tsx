@@ -1,12 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useComponentContext } from "../../../context/componentContext";
-import { deleteComponent, IComponent } from "../../../services/ComponentService";
+import { deleteComponent, getComponentsByCategory, getUserComponents, IComponent } from "../../../services/ComponentService";
 import { DashboardContainer, SnippetCard } from "./styles";
 import { toast } from "sonner";
 
+const categories = ["JavaScript", "Python", "CSS", "React", "Backend", "Database", "Others"];
+
 const Dashboard: React.FC = () => {
   const { components, setComponents, updateVisibility } = useComponentContext();
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+
+  useEffect(() => {
+    const fetchComponents = async () => {
+        try {
+            if (selectedCategory === "") {
+                const data = await getUserComponents(); // Carga todos los snippets si "All Categories"
+                setComponents(data);
+            } else {
+                const data = await getComponentsByCategory(selectedCategory); // Filtra por categoría
+                setComponents(data);
+            }
+        } catch (error) {
+            console.error("Error fetching components:", error);
+        }
+    };
+
+    fetchComponents();
+}, [selectedCategory]);
 
   const handleDelete = async (id: string) => {
     if (window.confirm("Are you sure you want to delete this snippet?")) {
@@ -22,7 +43,7 @@ const Dashboard: React.FC = () => {
       }
     }
   };
-  
+
   const generateWhatsAppLink = (component: IComponent) => {
     const message = `Hola,\n\nQuiero compartir contigo este snippet:\n\n${component.name}\n\n${component.codeSnippet}\n\nPuedes verlo en: ${component.shareUrl}`;
     return `https://wa.me/?text=${encodeURIComponent(message)}`;
@@ -39,7 +60,7 @@ const generateEmailLink = (component: IComponent) => {
   return (
     <DashboardContainer>
       <h1>Your Snippets</h1>
-      <Link 
+      <Link
         style={{
           display: "inline-block",
           marginTop: "10px",
@@ -55,7 +76,16 @@ const generateEmailLink = (component: IComponent) => {
         to="/create-snippet">
         Create one
       </Link>
-      
+
+      <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+                <option value="">All Categories</option>
+                {categories.map((category) => (
+                    <option key={category} value={category}>
+                        {category}
+                    </option>
+                ))}
+            </select>
+
       {components.length === 0 ? (
         <p>No snippets found.</p>
       ) : (
@@ -63,6 +93,7 @@ const generateEmailLink = (component: IComponent) => {
           <SnippetCard key={component.id}>
             <h3>{component.name}</h3>
             <p>{component.description}</p>
+            <p><strong>Category:</strong> {component.category}</p>
             <pre>{component.codeSnippet}</pre>
             <p>
               <strong>Tags:</strong> {component.tags.join(", ")}

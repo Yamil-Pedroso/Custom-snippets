@@ -22,7 +22,7 @@ export const getSingleComponent = async (req: UserRequest, res: Response) => {
     const { id } = req.params;
 
     try {
-        const component = await Component.findOne({ 
+        const component = await Component.findOne({
             _id: id, userId: req.user?.id,
             $or: [ { userId: req.user?.id }, { isPublic: true } ]
         });
@@ -50,7 +50,7 @@ export const getUserComponents = async (req: UserRequest, res: Response) => {
 
 
 export const createComponent = async (req: UserRequest, res: Response): Promise<void> => {
-    const { name, description, codeSnippet, tags } = req.body;
+    const { name, description, codeSnippet, tags, category } = req.body;
 
     try {
         const newComponent = new Component({
@@ -58,7 +58,8 @@ export const createComponent = async (req: UserRequest, res: Response): Promise<
             description,
             codeSnippet,
             tags,
-            userId: req.user?.id, 
+            category,
+            userId: req.user?.id,
         });
 
         const savedComponent = await newComponent.save();
@@ -165,3 +166,14 @@ export const toggleComponentVisibility = async (req: UserRequest, res: Response)
     }
 };
 
+
+export const getComponentsByCategory = async (req: UserRequest, res: Response) => {
+    const { category } = req.params;
+
+    try {
+        const components = await Component.find({ userId: req.user?.id, category });
+        res.status(200).json(components);
+    } catch (error) {
+        res.status(500).json({ message: "Error retrieving components by category", error });
+    }
+};

@@ -7,12 +7,13 @@ export interface IComponent {
     description?: string;
     codeSnippet: string;
     tags: string[];
+    category?: string;
     createdAt: string;
     isPublic: boolean;
     shareUrl: string;
 }
 
-export const getUserComponents = async (): Promise<IComponent[]> => { 
+export const getUserComponents = async (): Promise<IComponent[]> => {
     try {
         const response = await axios.get<IComponent[]>(`${API_URL}/user-components`);
         return response.data;
@@ -87,6 +88,16 @@ export const toggleComponentVisibility = async (id: string, isPublic: boolean): 
         return response.data;
     } catch (error) {
         console.error("Error updating visibility:", error);
+        throw error;
+    }
+};
+
+export const getComponentsByCategory = async (category: string): Promise<IComponent[]> => {
+    try {
+        const response = await axios.get<IComponent[]>(`${API_URL}/category/${category}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching components by category:", error);
         throw error;
     }
 };

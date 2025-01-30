@@ -78,3 +78,15 @@ export const ErrorMessage = styled.p`
   font-size: 14px;
   text-align: center;
 `;
+
+export const Select = styled.select`
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  outline: none;
+
+  &:focus {
+    border-color: #ff7225;
+  }
+`;

@@ -7,24 +7,26 @@ import {
     deleteComponent,
     getUserComponents,
     searchComponents,
-    toggleComponentVisibility
+    toggleComponentVisibility,
+    getComponentsByCategory
 } from "../controllers/componentController";
-import { protect } from "../middlewares/authMiddleware"; // Middleware de protección
+import { protect } from "../middlewares/authMiddleware";
 
 const router = Router();
 
 
-router.get("/user-components", protect, getUserComponents); // Obtiene solo los componentes del usuario autenticado
-router.get("/all", protect, getComponents); // Para administradores o acceso global
-// Ruta de búsqueda
-router.get("/search", protect, searchComponents); // Buscar componentes del usuario autenticado
-router.get("/:id", protect, getSingleComponent); // Ver un componente específico
+router.get("/user-components", protect, getUserComponents);
+router.get("/all", protect, getComponents);
 
-// Rutas protegidas
-router.post("/", protect, createComponent); // Crear un componente
-router.put("/:id", protect, updateComponent); // Actualizar un componente
-router.delete("/:id", protect, deleteComponent); // Eliminar un componente
-router.put("/:id/share", protect, toggleComponentVisibility); // Cambiar la visibilidad de un componente
+router.get("/search", protect, searchComponents);
+router.get("/:id", protect, getSingleComponent);
+
+router.post("/", protect, createComponent);
+router.put("/:id", protect, updateComponent);
+router.delete("/:id", protect, deleteComponent);
+router.put("/:id/share", protect, toggleComponentVisibility);
+router.get("/category/:category", protect, getComponentsByCategory);
+
 
 
 export default router;
