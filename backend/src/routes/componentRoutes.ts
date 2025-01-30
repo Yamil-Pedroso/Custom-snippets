@@ -21,7 +21,7 @@ router.get("/all", protect, getComponents);
 router.get("/search", protect, searchComponents);
 router.get("/:id", protect, getSingleComponent);
 
-router.post("/", protect, createComponent);
+router.post("/", protect, createComponent as any);
 router.put("/:id", protect, updateComponent);
 router.delete("/:id", protect, deleteComponent);
 router.put("/:id/share", protect, toggleComponentVisibility);

@@ -124,7 +124,7 @@ export const deleteComponent = async (req: Request, res: Response): Promise<void
 
 
 export const searchComponents = async (req: UserRequest, res: Response) => {
-    const { query } = req.query;
+    const { query, category } = req.query;
 
     try {
         const components = await Component.find({

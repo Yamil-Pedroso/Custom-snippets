@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useComponentContext } from "../../../context/componentContext";
 import { deleteComponent, getComponentsByCategory, getUserComponents, IComponent } from "../../../services/ComponentService";
 import { DashboardContainer, SnippetCard } from "./styles";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { toast } from "sonner";
 
 const categories = ["JavaScript", "Python", "CSS", "React", "Backend", "Database", "Others"];
@@ -94,7 +96,9 @@ const generateEmailLink = (component: IComponent) => {
             <h3>{component.name}</h3>
             <p>{component.description}</p>
             <p><strong>Category:</strong> {component.category}</p>
-            <pre>{component.codeSnippet}</pre>
+             <SyntaxHighlighter language={component.codeLanguage || "javascript"} style={atomDark}>
+              {component.codeSnippet}
+            </SyntaxHighlighter>
             <p>
               <strong>Tags:</strong> {component.tags.join(", ")}
             </p>

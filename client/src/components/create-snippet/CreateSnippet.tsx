@@ -11,19 +11,27 @@ import {
   Label,
   Input,
   Textarea,
-  Select, // ⬅️ Nuevo componente para el select
+  Select, 
   Button,
   ErrorMessage,
 } from "./styles";
 
-const categories = ["JavaScript", "Python", "CSS", "React", "Backend", "Database", "Others"];
+const categories = [
+  "JavaScript",
+  "Python",
+  "CSS",
+  "React",
+  "Backend",
+  "Database",
+  "Others",
+];
 
 const CreateSnippet: React.FC = () => {
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [codeSnippet, setCodeSnippet] = useState<string>("");
   const [tags, setTags] = useState<string>("");
-  const [category, setCategory] = useState<string>("Others"); // ⬅️ Estado para la categoría
+  const [category, setCategory] = useState<string>("Others");
   const { setComponents } = useComponentContext();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -50,10 +58,12 @@ const CreateSnippet: React.FC = () => {
         description,
         codeSnippet,
         tags: tags.split(",").map((tag) => tag.trim()),
-        category, // ⬅️ Se envía la categoría al backend
-        isPublic: true, // or false, depending on your requirement
-        shareUrl: "", // or any default value
+        category,
+        isPublic: true,
+        shareUrl: "",
       };
+
+      console.log("🚀 Sending snippet data:", newSnippet);
 
       const createdSnippet = await createComponent(newSnippet);
       setComponents((prev) => [...prev, createdSnippet]);
@@ -63,7 +73,7 @@ const CreateSnippet: React.FC = () => {
       navigate("/");
     } catch (error) {
       console.error("Error creating snippet:", error);
-      alert("Failed to create snippet. Please try again.");
+      toast.error("Failed to create snippet", { className: "toast" });
     } finally {
       setLoading(false);
     }
@@ -117,12 +127,19 @@ const CreateSnippet: React.FC = () => {
         {/* 🆕 Agregamos el selector de categoría */}
         <FormGroup>
           <Label htmlFor="category">Category:</Label>
-          <Select id="category" value={category} onChange={(e) => setCategory(e.target.value)}>
+          <Select
+            id="category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
             {categories.map((cat) => (
-              <option key={cat} value={cat}>{cat}</option>
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
             ))}
           </Select>
         </FormGroup>
+
         <Button type="submit">Create Snippet</Button>
       </Form>
     </Container>
