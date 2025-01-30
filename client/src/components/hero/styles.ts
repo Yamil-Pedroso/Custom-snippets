@@ -155,7 +155,7 @@ export const HeroButton = styled.button`
   font-size: 1.2rem;
   font-weight: bold;
   cursor: pointer;
-  box-shadow: 0px 4px 0px #7680e4, 0px 8px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 4px 0px #ff7226, 0px 8px 15px rgba(0, 0, 0, 0.2);
   transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s;
 
   &:hover {
