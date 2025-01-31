@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 const Features = () => {
   return (
     <FeaturesContainer>
-      <h2>Features</h2>
+      <h2>Hola mundo(Features)</h2>
       <FeaturesWrapper>
         {features.map((feature, index) => (
           <motion.div
