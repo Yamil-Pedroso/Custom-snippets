@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 // Estilos
@@ -84,19 +85,19 @@ const CommunitySection: React.FC = () => {
       title: '5 Snippets Every Developer Should Know',
       description: 'Learn about the most useful snippets for your projects.',
       image: 'https://images.unsplash.com/photo-1528901166007-3784c7dd3653?q=80&w=3570&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      link: '/blog/snippets-every-developer-should-know',
+      link: '/blog1',
     },
     {
       title: 'How to Organize Your Code Like a Pro',
       description: 'Tips and tricks to keep your codebase clean and efficient.',
       image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fFBlb3BsZSUyMHByb2dyYW1taW5nfGVufDB8fDB8fHww',
-      link: '/blog/organize-code-like-a-pro',
+      link: '/blog2',
     },
     {
       title: 'Join Our Community on GitHub',
       description: 'Collaborate and share ideas with fellow developers.',
       image: 'https://plus.unsplash.com/premium_photo-1682130147350-c1f80c968967?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8UGVvcGxlJTIwcHJvZ3JhbW1pbmd8ZW58MHx8MHx8fDA%3D',
-      link: 'https://github.com/yourcommunity',
+      link: '/blog3',
     },
   ];
 
@@ -111,8 +112,8 @@ const CommunitySection: React.FC = () => {
             <BlogContent>
               <BlogTitle>{post.title}</BlogTitle>
               <BlogDescription>{post.description}</BlogDescription>
-              <BlogLink href={post.link} target="_blank" rel="noopener noreferrer">
-                Read More
+              <BlogLink href={post.link} rel="noopener noreferrer">
+                 <Link to={post.link}>Read More</Link>
               </BlogLink>
             </BlogContent>
           </BlogCard>
