@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import { useComponentContext } from "../../../context/componentContext";
 import {
   deleteComponent,
@@ -20,6 +21,8 @@ import {
   DropdownMenu,
   Options,
   Icons,
+  Sidebar,
+  ShareLinksWrapper,
 } from "./styles";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -28,6 +31,9 @@ import {
   MdFolderDelete,
   MdCreateNewFolder,
 } from "react-icons/md";
+import { FaCopy } from "react-icons/fa";
+import { IoLogoWhatsapp } from "react-icons/io";
+import { BiLogoGmail } from "react-icons/bi";
 import { BiSolidCategory } from "react-icons/bi";
 import { toast } from "sonner";
 
@@ -65,7 +71,7 @@ const Dashboard: React.FC = () => {
     };
 
     fetchComponents();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCategory]);
 
   const handleDelete = async (id: string) => {
@@ -103,8 +109,7 @@ const Dashboard: React.FC = () => {
     setDropdownOpen(false); // Cierra el dropdown al seleccionar
   };
 
-
-   useEffect(() => {
+  useEffect(() => {
     // click outside dropdown
     function handleClickOutside(event: any) {
       if (event.target.closest(".category-dropdown")) {
@@ -115,50 +120,49 @@ const Dashboard: React.FC = () => {
 
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
-
-  }
-  , []);
-
+  }, []);
 
   return (
     <DashboardContainer>
-      <SnippetHeader>
-        <h1>Dashboard</h1>
-        <Options>
-          <Link to="/create-snippet" className="create">
-            Create one
-            <MdCreateNewFolder size={26} className="icon-plus" />
-          </Link>
+      <Sidebar>
+        <SnippetHeader>
+          <h1>Dashboard</h1>
+          <Options>
+            <Link to="/create-snippet" className="create">
+              Create one
+              <MdCreateNewFolder size={26} className="icon-plus" />
+            </Link>
 
-          <CategoryDropdown>
-            <CategoryButton
-              onMouseEnter={handleHoverToggle}
+            <CategoryDropdown>
+              <CategoryButton onMouseEnter={handleHoverToggle}>
+                <span>Categories </span>
+                <BiSolidCategory size={26} className="icon" />
+              </CategoryButton>
 
-              >
-              <span>Categories </span>
-              <BiSolidCategory size={26} className="icon" />
-            </CategoryButton>
-
-            {isDropdownOpen && (
-              <DropdownMenu
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-              >
-                <li onClick={() => handleCategorySelect("")}>All Categories</li>
-                {categories.map((category) => (
-                  <li
-                    key={category}
-                    onClick={() => handleCategorySelect(category)}
-                  >
-                    {category}
+              {isDropdownOpen && (
+                <DropdownMenu
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 1, type: "tween", ease: "easeInOut" }}
+                >
+                  <li onClick={() => handleCategorySelect("")}>
+                    All Categories
                   </li>
-                ))}
-              </DropdownMenu>
-            )}
-          </CategoryDropdown>
-        </Options>
-      </SnippetHeader>
+                  {categories.map((category) => (
+                    <li
+                      key={category}
+                      onClick={() => handleCategorySelect(category)}
+                    >
+                      {category}
+                    </li>
+                  ))}
+                </DropdownMenu>
+              )}
+            </CategoryDropdown>
+          </Options>
+        </SnippetHeader>
+      </Sidebar>
 
       <SnippetCardWrapper>
         {components.length === 0 ? (
@@ -167,24 +171,23 @@ const Dashboard: React.FC = () => {
           components.map((component) => (
             <SnippetCard key={component.id}>
               <div>
-              <div>
-                <h3>{component.name}</h3>
-                <p>{component.description}</p>
+                <div>
+                  <h3>{component.name}</h3>
+                  <p>{component.description}</p>
+                  <p>
+                    <strong>Category:</strong> {component.category}
+                  </p>
+                </div>
+                <SyntaxHighlighter
+                  language={"javascript"}
+                  style={atomDark}
+                  className="snippet-code"
+                >
+                  {component.codeSnippet}
+                </SyntaxHighlighter>
                 <p>
-                  <strong>Category:</strong> {component.category}
+                  <strong>Tags:</strong> {component.tags.join(", ")}
                 </p>
-              </div>
-              <SyntaxHighlighter
-                language={"javascript"}
-                style={atomDark}
-                className="snippet-code"
-              >
-                {component.codeSnippet}
-              </SyntaxHighlighter>
-              <p>
-                <strong>Tags:</strong> {component.tags.join(", ")}
-              </p>
-
               </div>
 
               {/* Botón para cambiar visibilidad */}
@@ -200,62 +203,51 @@ const Dashboard: React.FC = () => {
 
                 {/* Mostrar solo si es público */}
                 {component.isPublic && component.shareUrl && (
-                  <div style={{ marginTop: "10px" }}>
-                    <button
-                      onClick={() =>
-                        navigator.clipboard.writeText(component.shareUrl)
-                      }
-                      style={{
-                        padding: "5px 10px",
-                        backgroundColor: "#007bff",
-                        color: "#fff",
-                        border: "none",
-                        borderRadius: "4px",
-                        cursor: "pointer",
+                  <ShareLinksWrapper
+                    as={motion.div}
+                    initial={{ opacity: 0, x: -100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 100 }}
+                    transition={{
+                      duration: 1.5,
+                      type: "tween",
+                      ease: "easeInOut",
+                    }}
+                  >
+                    <p
+                      onClick={() => {
+                        navigator.clipboard.writeText(component.shareUrl);
+                        toast.success("Link copied to clipboard", {
+                          className: "toast",
+                        });
                       }}
                     >
-                      📋 Copy Link
-                    </button>
+                      <FaCopy />
+                    </p>
                     <a
                       href={generateWhatsAppLink(component)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      style={{
-                        marginLeft: "10px",
-                        padding: "5px 10px",
-                        backgroundColor: "#25D366",
-                        color: "#fff",
-                        textDecoration: "none",
-                        borderRadius: "4px",
-                      }}
                     >
-                      📲 WhatsApp
+                      <IoLogoWhatsapp />
                     </a>
                     <a
                       href={generateEmailLink(component)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      style={{
-                        marginLeft: "10px",
-                        padding: "5px 10px",
-                        backgroundColor: "#ea4335",
-                        color: "#fff",
-                        textDecoration: "none",
-                        borderRadius: "4px",
-                      }}
                     >
-                      📩 Gmail
+                      <BiLogoGmail />
                     </a>
-                  </div>
+                  </ShareLinksWrapper>
                 )}
 
                 <Icons>
                   <Link to={`/update-snippet/${component.id}`}>
-                    <MdEditSquare size={32} style={{ color: "#1b1b1b" }} />
+                    <MdEditSquare className="icon" />
                   </Link>
 
                   <div onClick={() => handleDelete(component.id)}>
-                    <MdFolderDelete size={34} style={{ color: "#1b1b1b" }} />
+                    <MdFolderDelete className="icon" />
                   </div>
                 </Icons>
               </OptionsWrapper>

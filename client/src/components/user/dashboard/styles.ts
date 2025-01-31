@@ -1,4 +1,4 @@
-import styled, {keyframes} from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { motion } from "framer-motion";
 
 export const round360Icon = keyframes`
@@ -22,6 +22,7 @@ export const DashboardContainer = styled.div`
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   gap: 1rem;
+  position: relative;
 
   h1 {
     margin-bottom: 1.5rem;
@@ -31,6 +32,21 @@ export const DashboardContainer = styled.div`
   p {
     color: #666;
   }
+`;
+
+export const Sidebar = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 10%;
+  min-width: 15rem;
+  position: fixed;
+  top: 5rem;
+  left: 0;
+  height: 100vh;
+  background-color: white;
+  padding: 1rem;
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
 `;
 
 export const Options = styled.div`
@@ -68,15 +84,15 @@ export const CategoryButton = styled.button`
     transform: scale(1.1);
 
     .icon {
-      animation: ${round360Icon} .2s linear;
+      animation: ${round360Icon} 0.2s linear;
     }
   }
 `;
 
 export const DropdownMenu = styled(motion.ul)`
-    position: absolute;
-  top:3rem;
-  right: 0;
+  position: absolute;
+  top: 3rem;
+  left: 0;
   background: #282c34;
   color: white;
   list-style: none;
@@ -108,7 +124,8 @@ export const SnippetHeader = styled.div`
     justify-content: space-between;
     align-items: center;
     text-decoration: none;
-    padding: 0.6rem 1.2rem;
+    padding: 0.5rem 1.5rem;
+    width: 12rem;
     font-size: 1rem;
     font-weight: bold;
     color: #fff;
@@ -129,8 +146,6 @@ export const SnippetHeader = styled.div`
       box-shadow: 0 2px 5px rgba(255, 122, 24, 0.3);
     }
   }
-
-
 `;
 
 export const CategoryWrapper = styled.div`
@@ -149,6 +164,8 @@ export const SnippetCardWrapper = styled.div`
   flex-wrap: wrap;
   gap: 1.1rem;
   justify-content: center;
+  margin-left: calc(200px);
+  
 `;
 
 export const SnippetCard = styled.div`
@@ -203,19 +220,81 @@ export const OptionsWrapper = styled.div`
   justify-content: space-between;
   align-items: flex-end;
   margin-top: 1rem;
+  position: relative;
 `;
 
 export const OptionButton = styled.button<ISnippetCardProps>`
   padding: 0.5rem 1rem;
   height: 2rem;
-  border: none;
+  border: 1px solid #ffffff;
   border-radius: 3rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  background-color: ${({ isPublic }) => (isPublic ? "#353d63" : "#4b6a53")};
-  color: #fff;
+  background-color: ${({ isPublic }) => (isPublic ? "#ffffff" : "#ffffff")};
+  color: #333;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 2px 2px 0px 1px #1b1b1b;
+    background-color: #ffffff;
+    color: ${({ isPublic }) => (isPublic ? "#ff7226" : "#245b4f")};
+    font-weight: bold;
+    border: 1px solid #1b1b1b;
+  }
+`;
+
+export const ShareLinksWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: absolute;
+  bottom: 2.5rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+  p {
+    cursor: pointer;
+    color: #333;
+    transition: all 0.3s ease;
+    font-weight: bold;
+
+    &:hover {
+      transform: translateY(-2px);
+      color: #ff7226;
+    }
+  }
+
+  a {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+
+    &:hover {
+      transform: translateY(-2px);
+      color: #ff7226;
+    }
+  }
 `;
 
 export const Icons = styled.div`
   display: flex;
   flex-direction: column;
+
+  .icon {
+    font-size: 48px;
+    cursor: pointer;
+    color: #333;
+    transition: transform 0.2s ease;
+    border-radius: 50%;
+    border: 1px solid #333;
+    padding: 0.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
 `;
