@@ -55,7 +55,6 @@ export const CategoryButton = styled.button`
   font-size: 1.5rem;
   padding: 0.5rem 1.5rem;
   border-radius: 3rem;
-  border: 1px solid #1b1b1b;
   background-color: #ffffff;
   color: #252524;
   transition: transform 0.2s ease;
@@ -76,7 +75,7 @@ export const CategoryButton = styled.button`
 
 export const DropdownMenu = styled(motion.ul)`
     position: absolute;
-  top: 2.5rem;
+  top:3rem;
   right: 0;
   background: #282c34;
   color: white;
@@ -114,7 +113,7 @@ export const SnippetHeader = styled.div`
     font-weight: bold;
     color: #fff;
     background: linear-gradient(135deg, #e78d4d, #e78d4d);
-    border: none;
+    border: 3px solid #e78d4d;
     border-radius: 25px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -131,7 +130,7 @@ export const SnippetHeader = styled.div`
     }
   }
 
- 
+
 `;
 
 export const CategoryWrapper = styled.div`
@@ -150,10 +149,12 @@ export const SnippetCardWrapper = styled.div`
   flex-wrap: wrap;
   gap: 1.1rem;
   justify-content: center;
-  //border: 1px solid red;
 `;
 
 export const SnippetCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   max-width: 400px;
   max-height: 40rem;
   border: 1px solid #ddd;
@@ -162,12 +163,14 @@ export const SnippetCard = styled.div`
   border-radius: 8px;
   background-color: #f9f9f9;
   box-shadow: 0 4px 1rem 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 
   .snippet-code {
     margin-top: 1rem;
     border-radius: 5px;
     font-size: 0.9rem;
-    max-height: 20rem;
+    max-height: 18rem;
+    min-height: 18rem;
   }
 
   h3 {
@@ -198,6 +201,7 @@ export const SnippetCard = styled.div`
 export const OptionsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: flex-end;
   margin-top: 1rem;
 `;
 
@@ -211,3 +215,7 @@ export const OptionButton = styled.button<ISnippetCardProps>`
   color: #fff;
 `;
 
+export const Icons = styled.div`
+  display: flex;
+  flex-direction: column;
+`;

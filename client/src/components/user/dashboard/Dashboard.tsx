@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useComponentContext } from "../../../context/componentContext";
@@ -18,10 +19,15 @@ import {
   CategoryButton,
   DropdownMenu,
   Options,
+  Icons,
 } from "./styles";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { MdEditSquare, MdFolderDelete,  MdCreateNewFolder } from "react-icons/md";
+import {
+  MdEditSquare,
+  MdFolderDelete,
+  MdCreateNewFolder,
+} from "react-icons/md";
 import { BiSolidCategory } from "react-icons/bi";
 import { toast } from "sonner";
 
@@ -40,15 +46,9 @@ const Dashboard: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [isDropdownOpen, setDropdownOpen] = useState<boolean>(false);
 
-  const handleHover = () => {
-    setDropdownOpen(true);
-  }
-
-  const handleLeave = () => {
-    setDropdownOpen(false);
-  }
-
-
+  const handleHoverToggle = () => {
+    setDropdownOpen((prev) => !prev); // Alternar el estado al hacer hover
+  };
   useEffect(() => {
     const fetchComponents = async () => {
       try {
@@ -65,6 +65,7 @@ const Dashboard: React.FC = () => {
     };
 
     fetchComponents();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCategory]);
 
   const handleDelete = async (id: string) => {
@@ -102,10 +103,27 @@ const Dashboard: React.FC = () => {
     setDropdownOpen(false); // Cierra el dropdown al seleccionar
   };
 
+
+   useEffect(() => {
+    // click outside dropdown
+    function handleClickOutside(event: any) {
+      if (event.target.closest(".category-dropdown")) {
+        return;
+      }
+      setDropdownOpen(false);
+    }
+
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+
+  }
+  , []);
+
+
   return (
     <DashboardContainer>
       <SnippetHeader>
-        <h1>Your Snippets</h1>
+        <h1>Dashboard</h1>
         <Options>
           <Link to="/create-snippet" className="create">
             Create one
@@ -113,11 +131,12 @@ const Dashboard: React.FC = () => {
           </Link>
 
           <CategoryDropdown>
-            <CategoryButton 
-                onMouseEnter={() => setDropdownOpen(true)}
-               
-            >
-              <span>Categories </span><BiSolidCategory size={26} className="icon" />
+            <CategoryButton
+              onMouseEnter={handleHoverToggle}
+
+              >
+              <span>Categories </span>
+              <BiSolidCategory size={26} className="icon" />
             </CategoryButton>
 
             {isDropdownOpen && (
@@ -147,11 +166,14 @@ const Dashboard: React.FC = () => {
         ) : (
           components.map((component) => (
             <SnippetCard key={component.id}>
-              <h3>{component.name}</h3>
-              <p>{component.description}</p>
-              <p>
-                <strong>Category:</strong> {component.category}
-              </p>
+              <div>
+              <div>
+                <h3>{component.name}</h3>
+                <p>{component.description}</p>
+                <p>
+                  <strong>Category:</strong> {component.category}
+                </p>
+              </div>
               <SyntaxHighlighter
                 language={"javascript"}
                 style={atomDark}
@@ -162,6 +184,8 @@ const Dashboard: React.FC = () => {
               <p>
                 <strong>Tags:</strong> {component.tags.join(", ")}
               </p>
+
+              </div>
 
               {/* Botón para cambiar visibilidad */}
               <OptionsWrapper>
@@ -225,7 +249,7 @@ const Dashboard: React.FC = () => {
                   </div>
                 )}
 
-                <div>
+                <Icons>
                   <Link to={`/update-snippet/${component.id}`}>
                     <MdEditSquare size={32} style={{ color: "#1b1b1b" }} />
                   </Link>
@@ -233,7 +257,7 @@ const Dashboard: React.FC = () => {
                   <div onClick={() => handleDelete(component.id)}>
                     <MdFolderDelete size={34} style={{ color: "#1b1b1b" }} />
                   </div>
-                </div>
+                </Icons>
               </OptionsWrapper>
             </SnippetCard>
           ))

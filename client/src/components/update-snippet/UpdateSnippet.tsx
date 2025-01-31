@@ -42,12 +42,12 @@ const UpdateSnippet: React.FC = () => {
           // Esto es necesario para que algunos navegadores muestren un mensaje de advertencia
           e.returnValue = ""; // Algunos navegadores requieren esta línea, aunque está "deprecated".
         };
-      
+
         window.addEventListener("beforeunload", handleBeforeUnload);
         return () => window.removeEventListener("beforeunload", handleBeforeUnload);
       }, [name, description, codeSnippet, tags]);
-      
-      
+
+
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -70,7 +70,7 @@ const UpdateSnippet: React.FC = () => {
             toast.success("Snippet updated successfully", {
                 className: "toast",
             });
-            navigate("/"); // Navega de regreso a la lista
+            navigate("/dashboard"); // Navega de regreso a la lista
         } catch (error) {
             console.error("Error updating snippet:", error);
             alert("Failed to update snippet. Please try again.");
