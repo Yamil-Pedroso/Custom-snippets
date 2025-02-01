@@ -92,13 +92,13 @@ const Dashboard: React.FC = () => {
   };
 
   const generateWhatsAppLink = (component: IComponent) => {
-    const message = `Hola,\n\nQuiero compartir contigo este snippet:\n\n${component.name}\n\n${component.codeSnippet}\n\nPuedes verlo en: ${component.shareUrl}`;
+    const message = `Hi,\n\nI want to share this snippet with you:\n\n${component.name}\n\n${component.codeSnippet}\n\nYou can open it here: ${component.shareUrl}`;
     return `https://wa.me/?text=${encodeURIComponent(message)}`;
   };
 
   const generateEmailLink = (component: IComponent) => {
-    const subject = `Snippet Compartido: ${component.name}`;
-    const body = `Hola,\n\nQuiero compartir contigo este snippet:\n\n${component.name}\n\n${component.codeSnippet}\n\nPuedes verlo en: ${component.shareUrl}`;
+    const subject = `Snippet Shared: ${component.name}`;
+    const body = `Hi,\n\nI want to share this snippet with you:\n\n${component.name}\n\n${component.codeSnippet}\n\nYou can open it here: ${component.shareUrl}`;
     return `mailto:?subject=${encodeURIComponent(
       subject
     )}&body=${encodeURIComponent(body)}`;
