@@ -33,12 +33,12 @@ const Login: React.FC = () => {
         formData.email,
         formData.password
       );
-      localStorage.setItem("authToken", token); // Guarda el token en localStorage
-      setCurrentUser(user); // Actualiza el contexto del usuario
+      localStorage.setItem("authToken", token); 
+      setCurrentUser(user); 
       toast.success("Logged in successfully", {
         className: "toast",
       });
-      navigate("/dashboard"); // Redirige al dashboard
+      navigate("/dashboard"); 
     } catch (err) {
       setError("Invalid email or password");
       console.error(err);
