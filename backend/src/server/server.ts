@@ -46,12 +46,24 @@ app.use(
     }),
   )
 
-  app.use(cors({
-    origin: [process.env.CLIENT_URL || "http://localhost:5173", "https://custom-snippetsv1.netlify.app/"],
+  const allowedOrigins = [
+    process.env.CLIENT_URL || "http://localhost:5173", 
+    "https://custom-snippetsv1.netlify.app/"
+];
+
+app.use(cors({
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, origin);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
 }));
+
 
 // Middleware to handle errors when uploading files
 app.use((err: any, req: any, res: any, next: any) => {
