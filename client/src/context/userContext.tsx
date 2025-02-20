@@ -1,14 +1,12 @@
-// src/context/userContext.tsx
-
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 import { getCurrentUser, IUser } from "../services/UserService";
 
 interface UserContextProps {
-  currentUser: IUser | null; // Usuario actualmente autenticado
+  currentUser: IUser | null; 
   setCurrentUser: React.Dispatch<React.SetStateAction<IUser | null>>;
-  users: IUser[]; // Lista de usuarios para la administración
+  users: IUser[]; 
   setUsers: React.Dispatch<React.SetStateAction<IUser[]>>;
-  loading: boolean; // Indica si se están cargando los datos del usuario
+  loading: boolean; 
 }
 
 const UserContext = createContext<UserContextProps | undefined>(undefined);
@@ -31,18 +29,18 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
       try {
         const userData = await getCurrentUser();
-        setCurrentUser(userData); // Actualiza el estado del usuario autenticado
+        setCurrentUser(userData); 
       } catch (error) {
         console.error("Error fetching user data:", error);
         setError("Error fetching user data");
-        localStorage.removeItem("authToken"); // Eliminar el token si es inválido
+        localStorage.removeItem("authToken"); 
       } finally {
         setLoading(false);
       }
     };
 
     fetchCurrentUser();
-  }, []); // Se ejecuta solo al montar el componente
+  }, []); 
 
   return (
     <UserContext.Provider value={{ currentUser, setCurrentUser, users, setUsers, loading }}>
