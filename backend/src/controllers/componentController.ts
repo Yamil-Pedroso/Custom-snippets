@@ -50,7 +50,7 @@ export const getUserComponents = async (req: UserRequest, res: Response) => {
 
 
 export const createComponent = async (req: UserRequest, res: Response): Promise<void> => {
-    const { name, description, codeSnippet, tags, category } = req.body;
+    const { name, description, codeSnippet, tags, category, isPublic } = req.body;
 
     try {
         const newComponent = new Component({
@@ -59,10 +59,13 @@ export const createComponent = async (req: UserRequest, res: Response): Promise<
             codeSnippet,
             tags,
             category,
+            isPublic,
             userId: req.user?.id,
         });
 
         const savedComponent = await newComponent.save();
+        console.log("✅ Snippet guardado:", savedComponent);
+        
         res.status(201).json(savedComponent);
     } catch (error) {
         res.status(400).json({ message: "Error creating component", error });
