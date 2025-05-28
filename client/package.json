@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.7",
-    "axios": "^1.7.9",
+    "axios": "^1.8.2",
     "cors": "^2.8.5",
     "framer-motion": "^11.13.5",
     "prettier": "^3.5.3",
