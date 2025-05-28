@@ -45,7 +45,10 @@ app.use(
   })
 );
 
-const allowedOrigins = ["https://custom-snippetsv1.netlify.app/"];
+const allowedOrigins = [
+  process.env.CLIENT_URL || "http://localhost:5173",
+  "https://custom-snippetsv1.netlify.app/",
+];
 
 app.use(
   cors({
