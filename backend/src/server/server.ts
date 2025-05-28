@@ -45,7 +45,7 @@ app.use(
   })
 );
 
-const allowedOrigins = ["https://custom-snippets.netlify.app/"];
+const allowedOrigins = ["https://custom-snippets.netlify.app"];
 
 app.use(
   cors({
