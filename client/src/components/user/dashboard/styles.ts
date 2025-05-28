@@ -17,7 +17,7 @@ interface ISnippetCardProps {
 export const DashboardContainer = styled.div`
   display: flex;
   justify-content: center;
-  padding: 2rem;
+  padding: 4rem;
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -165,14 +165,13 @@ export const SnippetCardWrapper = styled.div`
   gap: 1.1rem;
   justify-content: center;
   margin-left: calc(200px);
-  
 `;
 
 export const SnippetCard = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  max-width: 400px;
+  max-width: 500px;
   max-height: 40rem;
   border: 1px solid #ddd;
   padding: 1.5rem;
@@ -193,6 +192,8 @@ export const SnippetCard = styled.div`
   h3 {
     margin-bottom: 0.75rem;
     color: #222;
+    font-size: 1.2rem;
+    font-weight: bold;
   }
 
   p {
@@ -224,7 +225,7 @@ export const OptionsWrapper = styled.div`
 `;
 
 export const OptionButton = styled.button<ISnippetCardProps>`
-  padding: 0.5rem 1rem;
+  padding: 0 1rem;
   height: 2rem;
   border: 1px solid #ffffff;
   border-radius: 3rem;
@@ -282,6 +283,7 @@ export const ShareLinksWrapper = styled.div`
 export const Icons = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 0.8rem;
 
   .icon {
     font-size: 48px;

@@ -14,6 +14,11 @@ export const NavbarContainer = styled.nav`
   z-index: 1000;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 
+  h2 {
+    color: #ff7225;
+    font-size: 1.8rem;
+  }
+
   @media (max-width: 960px) {
     display: none;
   }
@@ -267,5 +272,3 @@ export const UsernameText = styled.h3`
     font-weight: bold;
   }
 `;
-
-

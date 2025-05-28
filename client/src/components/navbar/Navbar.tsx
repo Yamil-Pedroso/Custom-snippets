@@ -42,11 +42,10 @@ const Navbar: React.FC = () => {
         currentUser={currentUser}
       />
       <NavbarContainer>
-        <div>
-          <Link to="/" style={{ color: "#fff", textDecoration: "none" }}>
-            <h2 style={{ color: "#ff7225" }}>SNIPPETS</h2>
-          </Link>
-        </div>
+        <Link to="/" style={{ color: "#fff", textDecoration: "none" }}>
+          <h2>SNIPPETS</h2>
+        </Link>
+
         <UserMenu
           isAuthenticated={isAuthenticated}
           currentUser={currentUser}

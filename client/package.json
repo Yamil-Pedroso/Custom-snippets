@@ -10,10 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.1.7",
     "axios": "^1.7.9",
     "cors": "^2.8.5",
     "framer-motion": "^11.13.5",
+    "prettier": "^3.5.3",
     "react": "^18.3.1",
+    "react-code-blocks": "^0.1.6",
     "react-confetti": "^6.1.0",
     "react-dom": "^18.3.1",
     "react-icons": "^5.4.0",
@@ -21,7 +24,8 @@
     "react-router-dom": "^7.0.2",
     "react-syntax-highlighter": "^15.6.1",
     "sonner": "^1.7.2",
-    "styled-components": "^6.1.13"
+    "styled-components": "^6.1.13",
+    "tailwindcss": "^4.1.7"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",

@@ -24,8 +24,8 @@ import {
   Sidebar,
   ShareLinksWrapper,
 } from "./styles";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+//import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+//import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import {
   MdEditSquare,
   MdFolderDelete,
@@ -178,13 +178,23 @@ const Dashboard: React.FC = () => {
                     <strong>Category:</strong> {component.category}
                   </p>
                 </div>
-                <SyntaxHighlighter
-                  language={"javascript"}
-                  style={atomDark}
-                  className="snippet-code"
+                <div
+                  style={{
+                    backgroundColor: "#2a2a2a",
+                    color: "#f5f5f5",
+                    padding: "1rem",
+                    borderRadius: "10px",
+                    fontFamily: "monospace",
+                    fontSize: "1rem",
+                    whiteSpace: "pre-wrap",
+                    wordBreak: "break-word",
+                    height: "20rem",
+                    overflowY: "auto",
+                  }}
                 >
                   {component.codeSnippet}
-                </SyntaxHighlighter>
+                </div>
+
                 <p>
                   <strong>Tags:</strong> {component.tags.join(", ")}
                 </p>

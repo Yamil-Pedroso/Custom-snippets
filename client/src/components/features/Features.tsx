@@ -5,17 +5,17 @@ import { motion } from "framer-motion";
 const Features = () => {
   return (
     <FeaturesContainer>
-      <h2>Features</h2>
+      <h2 className="text-cyan-300">Features</h2>
       <FeaturesWrapper>
         {features.map((feature, index) => (
           <motion.div
             key={index}
-            initial={{ opacity: 0, y: 50 }} // Estado inicial
-            whileInView={{ opacity: 1, y: 0 }} // Animación al entrar en el viewport
-            viewport={{ once: false, amount: 0.2 }} // Ejecutar la animación solo una vez cuando esté al 20% visible
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.2 }}
             transition={{
               duration: 0.6,
-              delay: index * 0.2, // Retraso para animar secuencialmente
+              delay: index * 0.2,
               ease: "easeOut",
             }}
           >
