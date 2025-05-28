@@ -45,16 +45,13 @@ app.use(
   })
 );
 
-const allowedOrigins = [
-  process.env.CLIENT_URL || "http://localhost:5173",
-  "https://custom-snippetsv1.netlify.app/",
-];
+const allowedOrigins = ["https://custom-snippets.netlify.app/"];
 
 app.use(
   cors({
     origin: (origin, callback) => {
       if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, origin); // Devuelve el origin exacto
+        callback(null, origin);
       } else {
         callback(new Error("Not allowed by CORS"));
       }
