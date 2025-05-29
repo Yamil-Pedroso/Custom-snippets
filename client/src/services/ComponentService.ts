@@ -103,9 +103,19 @@ export const toggleComponentVisibility = async (
   isPublic: boolean
 ): Promise<IComponent> => {
   try {
-    const response = await axios.put<IComponent>(`/components/${id}/share`, {
-      isPublic,
-    });
+    const token = localStorage.getItem("authToken");
+    const response = await axios.put<IComponent>(
+      `/components/${id}/share`,
+      {
+        isPublic,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     console.error("Error updating visibility:", error);

@@ -1,15 +1,6 @@
 import React from "react";
 import { useUserContext } from "../../../context/userContext";
 import { useComponentContext } from "../../../context/componentContext";
-import {
-  ProfileContainer,
-  UserInfo,
-  SnippetList,
-  SnippetCard,
-  AvatarWrapper,
-  StatusCircle,
-  StatusWrapper,
-} from "./styles";
 
 const Profile: React.FC = () => {
   const { currentUser } = useUserContext();
@@ -20,69 +11,84 @@ const Profile: React.FC = () => {
   }
 
   const lastSnippet =
-  components.length > 0
-    ? components.slice().sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0]
-    : null;
+    components.length > 0
+      ? components
+          .slice()
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          )[0]
+      : null;
 
   return (
-    <ProfileContainer>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "2rem",
-        }}
-      >
-        <UserInfo>
-          <h1>Welcome, {currentUser.username}!</h1>
-          <p>
-            <strong>Email:</strong> {currentUser.email}
+    <div className="p-8 max-w-4xl mx-auto bg-white rounded-lg shadow-md relative">
+      <div className="flex justify-between items-center mb-8">
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">
+            Welcome, {currentUser.username}!
+          </h1>
+          <p className="text-gray-700 mb-1">
+            <strong className="text-black">Email:</strong> {currentUser.email}
           </p>
-          <p>
-            <strong>Role:</strong> {currentUser.isAdmin ? "Admin" : "User"}
+          <p className="text-gray-700 mb-1">
+            <strong className="text-black">Role:</strong>{" "}
+            {currentUser.isAdmin ? "Admin" : "User"}
           </p>
-
-          <p>
-            <strong>Snippets Created:</strong> {components.length}
+          <p className="text-gray-700 mb-1">
+            <strong className="text-black">Snippets Created:</strong>{" "}
+            {components.length}
           </p>
-
-          <p>
-            <strong>Joined:</strong>{" "}
+          <p className="text-gray-700 mb-4">
+            <strong className="text-black">Joined:</strong>{" "}
             {new Date(currentUser.createdAt).toLocaleDateString()}
           </p>
 
-          <StatusWrapper>
-            <p>
-              <strong>Status:</strong>
+          <div className="flex items-center gap-2">
+            <p className="text-gray-700">
+              <strong className="text-black">Status:</strong>
             </p>
-            <StatusCircle active={currentUser.active}>
-              {currentUser.active}
-            </StatusCircle>
-          </StatusWrapper>
-        </UserInfo>
+            <div
+              className={`w-3 h-3 rounded-full ${
+                currentUser.active ? "bg-green-500" : "bg-red-500"
+              }`}
+            />
+          </div>
+        </div>
 
-        <AvatarWrapper>
-          <img src={currentUser?.avatar} alt="User avatar" />
-        </AvatarWrapper>
+        <div className="w-40 h-40 rounded-full border-4 border-gray-800 overflow-hidden">
+          <img
+            src={currentUser?.avatar}
+            alt="User avatar"
+            className="w-full h-full object-cover"
+          />
+        </div>
       </div>
 
-      <SnippetList>
-        <h2>Your Last Snippet</h2>
+      <div>
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">
+          Your Last Snippet
+        </h2>
         {lastSnippet ? (
-          <SnippetCard key={lastSnippet.id}>
-            <h3>{lastSnippet.name}</h3>
-            <p>{lastSnippet.description || "No description provided."}</p>
-            <pre>{lastSnippet.codeSnippet}</pre>
-            <p>
-              <strong>Tags:</strong> {lastSnippet.tags.join(", ")}
+          <div className="border border-gray-300 p-6 mb-4 rounded-lg bg-gray-100">
+            <h3 className="text-lg font-bold text-gray-800 mb-2">
+              {lastSnippet.name}
+            </h3>
+            <p className="text-gray-700 mb-2">
+              {lastSnippet.description || "No description provided."}
             </p>
-          </SnippetCard>
+            <pre className="bg-gray-900 text-white p-4 rounded-md overflow-x-auto font-mono text-sm mb-2">
+              {lastSnippet.codeSnippet}
+            </pre>
+            <p className="text-gray-600">
+              <strong className="text-black">Tags:</strong>{" "}
+              {lastSnippet.tags.join(", ")}
+            </p>
+          </div>
         ) : (
-          <p>You haven't created any snippets yet.</p>
+          <p className="text-gray-600">You haven't created any snippets yet.</p>
         )}
-      </SnippetList>
-    </ProfileContainer>
+      </div>
+    </div>
   );
 };
 
