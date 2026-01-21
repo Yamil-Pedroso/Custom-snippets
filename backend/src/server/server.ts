@@ -6,45 +6,38 @@ import cookieParser from "cookie-parser";
 import cookieSession from "cookie-session";
 import { v2 as cloudinary } from "cloudinary";
 import dotenv from "dotenv";
-import componentRoutes from "../routes/componentRoutes";
 import multer from "multer";
+
+import componentRoutes from "../routes/componentRoutes";
 import userRoutes from "../routes/userRoutes";
 import connectDB from "../config/db";
 
+/* ===================== ENV ===================== */
 dotenv.config({
   path: path.resolve(__dirname, "..", "config", "config.env"),
 });
 
+/* 🔑 Render / VPS always injects PORT */
 const PORT = process.env.PORT || 8080;
+
+/* ===================== DB ===================== */
 connectDB();
 
-// Cloudinary config
+/* ===================== CLOUDINARY ===================== */
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_API_KEY,
   api_secret: process.env.CLOUD_API_SECRET,
 });
 
+/* ===================== APP ===================== */
 const app = express();
-app.use(cookieParser());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
-// Handle cookies
-app.use(cookieParser());
-const cookieTime = process.env.COOKIE_TIME as any;
-const cookieSecret = process.env.COOKIE_SECRET as any;
-app.use(
-  cookieSession({
-    name: "session",
-    maxAge: cookieTime * 24 * 60 * 60 * 1000,
-    keys: [cookieSecret],
-    secure: true, // Only send over HTTPS
-    sameSite: "none", // Allow cross-origin requests
-    httpOnly: true, // Makes the cookie accessible only on the server-side
-  }),
-);
+/* ===================== TRUST PROXY ===================== */
+/* REQUIRED for Render / Nginx / HTTPS */
+app.set("trust proxy", 1);
 
+/* ===================== CORS (FIRST) ===================== */
 const allowedOrigins = [
   "https://custom-snippets-app.netlify.app",
   "http://localhost:5173",
@@ -65,22 +58,43 @@ app.use(
   }),
 );
 
-// Middleware to handle errors when uploading files
+/* ===================== PREFLIGHT ===================== */
+app.options("*", cors());
+
+/* ===================== BODY ===================== */
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(cookieParser());
+
+/* ===================== COOKIES ===================== */
+app.use(
+  cookieSession({
+    name: "session",
+    maxAge: Number(process.env.COOKIE_TIME || 7) * 24 * 60 * 60 * 1000,
+    keys: [process.env.COOKIE_SECRET as string],
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "none",
+    httpOnly: true,
+  }),
+);
+
+/* ===================== ROUTES ===================== */
+app.use("/api/v1/components", componentRoutes);
+app.use("/api/v1/auth", userRoutes);
+
+/* ===================== MULTER ERRORS ===================== */
 app.use((err: any, req: any, res: any, next: any) => {
   if (err instanceof multer.MulterError) {
-    // A Multer error occurred when uploading
     return res.status(400).json({ message: err.message });
-  } else if (err) {
-    // An unknown error occurred when uploading
+  }
+  if (err) {
     return res.status(400).json({ message: err.message });
   }
   next();
 });
 
-app.use(express.json());
-app.use("/api/v1/components", componentRoutes);
-app.use("/api/v1/auth", userRoutes);
-
+/* ===================== START ===================== */
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
