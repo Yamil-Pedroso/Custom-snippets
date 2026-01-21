@@ -12,22 +12,22 @@ const liftOff = keyframes`
 
 const takeoffRocket = keyframes`
   0% {
-    transform: translate(0, 0); 
+    transform: translate(0, 0);
   }
   50% {
-    transform: translate(12px, -12px); 
+    transform: translate(12px, -12px);
   }
   100% {
-    transform: translate(0, 0); 
+    transform: translate(0, 0);
   }
 `;
 
 const flyOutViewport = keyframes`
   0% {
-    transform: translate(0, 0); 
+    transform: translate(0, 0);
   }
   100% {
-    transform: translate(100vw, -100vh); 
+    transform: translate(100vw, -100vh);
   }
 `;
 
@@ -50,7 +50,6 @@ export const HeroContainer = styled.div`
 
 // Contenedor del lado izquierdo
 export const HeroWrapper = styled.div`
-  
   h1 {
     font-size: 3rem;
     font-weight: bold;
@@ -155,18 +154,27 @@ export const HeroButton = styled.button`
   font-size: 1.2rem;
   font-weight: bold;
   cursor: pointer;
-  box-shadow: 0px 4px 0px #ff7226, 0px 8px 15px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s;
+  box-shadow:
+    0px 4px 0px #ff7226,
+    0px 8px 15px rgba(0, 0, 0, 0.2);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    background-color 0.3s;
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0px 6px 0px #ff944d, 0px 10px 20px rgba(0, 0, 0, 0.3);
+    box-shadow:
+      0px 6px 0px #ff944d,
+      0px 10px 20px rgba(0, 0, 0, 0.3);
     background-color: #ff944d;
   }
 
   &:active {
     transform: translateY(2px);
-    box-shadow: 0px 2px 0px #ff944d, 0px 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow:
+      0px 2px 0px #ff944d,
+      0px 4px 10px rgba(0, 0, 0, 0.2);
   }
 
   @media (max-width: 960px) {

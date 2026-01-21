@@ -1,6 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+//import { registerUser } from "../../../services/UserService";
 import axios from "axios";
+import {
+  Container,
+  Title,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Button,
+  ErrorMessage,
+} from "./styles";
 import Confetti from "react-confetti";
 import { toast } from "sonner";
 
@@ -21,7 +32,7 @@ const Register: React.FC = () => {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
+    const file = e.target.files ? e.target.files[0] : null;
     setAvatar(file);
   };
 
@@ -39,17 +50,22 @@ const Register: React.FC = () => {
     }
 
     try {
+      // Crea un FormData para enviar los datos
       const formDataToSend = new FormData();
       formDataToSend.append("username", formData.username);
       formDataToSend.append("email", formData.email);
       formDataToSend.append("password", formData.password);
       formDataToSend.append("isAdmin", "false");
-      formDataToSend.append("avatar", avatar);
+      formDataToSend.append("avatar", avatar); // Adjunta el archivo del avatar
 
+      // Envía los datos al backend
       await axios.post("/auth/register", formDataToSend, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
 
+      // Limpia el formulario y muestra el confetti
       setFormData({ username: "", email: "", password: "" });
       setAvatar(null);
       setShowConfetti(true);
@@ -60,7 +76,9 @@ const Register: React.FC = () => {
         }
       );
       setError(null);
-      setTimeout(() => navigate("/login"), 5000);
+      setTimeout(() => {
+        navigate("/login");
+      }, 5000);
     } catch (err) {
       setError("Error registering user. Please try again.");
       console.error(err);
@@ -68,80 +86,75 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="h-screen w-full flex items-center justify-center bg-gray-50 px-4">
-      <div className="max-w-md mx-auto mt-10 p-6 bg-gray-100 rounded-lg shadow-md">
-        {showConfetti && <Confetti />}
-        <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">
-          Register
-        </h1>
-        {error && (
-          <p className="text-red-600 text-sm text-center mb-4">{error}</p>
-        )}
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div className="flex flex-col">
-            <label className="mb-1 font-semibold text-gray-700">
-              Username:
-            </label>
-            <input
-              type="text"
-              name="username"
-              className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-orange-500"
-              value={formData.username}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="flex flex-col">
-            <label className="mb-1 font-semibold text-gray-700">Email:</label>
-            <input
-              type="email"
-              name="email"
-              className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-orange-500"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="flex flex-col">
-            <label className="mb-1 font-semibold text-gray-700">
-              Password:
-            </label>
-            <input
-              type="password"
-              name="password"
-              className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-orange-500"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="flex flex-col">
-            <label className="mb-1 font-semibold text-gray-700">Avatar:</label>
-            <input
-              type="file"
-              name="avatar"
-              onChange={handleFileChange}
-              accept="image/*"
-              className="px-4 py-2 border border-gray-300 rounded-md"
-            />
-          </div>
-          <div className="flex justify-between items-center mt-4">
-            <button
-              type="submit"
-              className="bg-orange-500 text-white px-6 py-2 rounded-md hover:bg-orange-600 transition font-bold"
-            >
-              Register
-            </button>
-            <p
-              className="text-orange-500 cursor-pointer text-sm underline font-bold"
-              onClick={() => navigate("/login")}
-            >
-              Login
-            </p>
-          </div>
-        </form>
-      </div>
-    </div>
+    <Container>
+      {showConfetti && <Confetti />}
+      <Title>Register</Title>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+      <Form onSubmit={handleSubmit}>
+        <FormGroup>
+          <Label>Username:</Label>
+          <Input
+            type="text"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            required
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label>Email:</Label>
+          <Input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label>Password:</Label>
+          <Input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label>Avatar:</Label>
+          <Input
+            type="file"
+            name="avatar"
+            onChange={(e) => handleFileChange(e)}
+            accept="image/*"
+          />
+        </FormGroup>
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Button type="submit">Register</Button>
+          <p
+            style={{
+              color: "#ff7225",
+              cursor: "pointer",
+              fontSize: "1.2rem",
+              textDecoration: "underline",
+              fontWeight: "bold",
+            }}
+            onClick={() => navigate("/login")}
+          >
+            {" "}
+            Login
+          </p>
+        </div>
+      </Form>
+    </Container>
   );
 };
 

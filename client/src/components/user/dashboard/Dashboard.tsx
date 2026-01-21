@@ -12,6 +12,7 @@ import { BiSolidCategory } from "react-icons/bi";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import SnippetCard from "./SnippetCard";
+import Button from "../../common/btns/Button";
 
 const categories = [
   "JavaScript",
@@ -89,27 +90,28 @@ const Dashboard: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex justify-center gap-4 p-16 bg-white rounded-lg shadow-md relative">
-      <aside className="flex flex-col gap-4 w-[15rem] fixed top-20 left-0 h-screen bg-white p-4 shadow-md">
+    <div className="flex justify-center gap-4  bg-white rounded-lg shadow-lg relative !p-16">
+      {/* ASIDE: visible solo en >= lg y por encima */}
+      <aside className="hidden xl:flex flex-col gap-4 w-[15rem] fixed top-20 left-0 h-screen bg-white !p-4 shadow-md z-40">
         <header className="mb-6">
           <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
         </header>
         <div className="flex flex-col gap-4">
-          <Link
-            to="/create-snippet"
-            className="flex items-center justify-between px-6 py-2 w-48 font-bold text-white bg-orange-500 border-2 border-orange-500 rounded-full shadow-md hover:-translate-y-1 hover:shadow-lg transition"
-          >
-            Create one <MdCreateNewFolder size={24} />
+          <Link to="/create-snippet">
+            <Button
+              label="Create one"
+              className=" text-white font-bold bg-orange-500 border-2 border-orange-500"
+              icon={<MdCreateNewFolder size={20} />}
+            />
           </Link>
 
           <div className="relative category-dropdown">
-            <button
+            <Button
+              label="Categories"
               onMouseEnter={handleHoverToggle}
-              className="flex items-center gap-2 text-lg px-4 py-2 rounded-full bg-white text-gray-800 shadow-md hover:scale-105 transition"
-            >
-              <span>Categories</span>
-              <BiSolidCategory size={22} className="icon" />
-            </button>
+              className=" bg-white text-gray-800 shadow-md"
+              icon={<BiSolidCategory size={22} className="icon" />}
+            />
 
             {isDropdownOpen && (
               <motion.ul
@@ -117,11 +119,11 @@ const Dashboard: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 1, type: "tween", ease: "easeInOut" }}
-                className="absolute top-12 left-0 bg-gray-900 text-white rounded-lg shadow-lg z-50 min-w-[180px] p-2"
+                className="absolute top-14 left-0 bg-gray-900 text-white rounded-lg shadow-lg z-50 min-w-[180px] p-2"
               >
                 <li
                   onClick={() => handleCategorySelect("")}
-                  className="px-4 py-2 cursor-pointer hover:bg-gray-700 rounded"
+                  className="!px-4 !py-2 cursor-pointer hover:bg-gray-700 rounded"
                 >
                   All Categories
                 </li>
@@ -129,7 +131,7 @@ const Dashboard: React.FC = () => {
                   <li
                     key={category}
                     onClick={() => handleCategorySelect(category)}
-                    className="px-4 py-2 cursor-pointer hover:bg-gray-700 rounded"
+                    className="!px-4 !py-2 cursor-pointer hover:bg-gray-700 rounded"
                   >
                     {category}
                   </li>
@@ -140,7 +142,7 @@ const Dashboard: React.FC = () => {
         </div>
       </aside>
 
-      <div className="ml-[15rem] w-full">
+      <div className="">
         <SnippetCard
           components={components}
           updateVisibility={updateVisibility}

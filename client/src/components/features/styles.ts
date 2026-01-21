@@ -9,7 +9,6 @@ export const FeaturesContainer = styled.div`
   margin-top: 2rem;
   margin-bottom: 2rem;
   padding: 2rem;
-  background-color: ${({ theme }) => theme.colors.bgBody};
 
   h2 {
     font-size: 2.5rem;
@@ -116,7 +115,9 @@ export const Feature = styled.div`
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
   }
 
   @media (max-width: 768px) {

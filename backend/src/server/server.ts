@@ -42,11 +42,11 @@ app.use(
     secure: true, // Only send over HTTPS
     sameSite: "none", // Allow cross-origin requests
     httpOnly: true, // Makes the cookie accessible only on the server-side
-  })
+  }),
 );
 
 const allowedOrigins = [
-  "https://custom-snippets.netlify.app",
+  "https://custom-snippets-app.netlify.app",
   "http://localhost:5173",
 ];
 
@@ -62,7 +62,7 @@ app.use(
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-  })
+  }),
 );
 
 // Middleware to handle errors when uploading files

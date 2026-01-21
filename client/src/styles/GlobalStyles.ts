@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyles = createGlobalStyle`
     *, *::before, *::after {
@@ -9,8 +9,7 @@ export const GlobalStyles = createGlobalStyle`
 
     body {
         font-family: 'Arial', sans-serif;
-        background-color: ${({ theme }) => theme.colors.bgBody};
-        color: ${({ theme }) => theme.text.secondary};
+
         overflow-x: hidden;
         position: relative;
     }
