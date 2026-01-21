@@ -17,7 +17,6 @@ dotenv.config({
   path: path.resolve(__dirname, "..", "config", "config.env"),
 });
 
-/* 🔑 Render / VPS always injects PORT */
 const PORT = process.env.PORT || 8080;
 
 /* ===================== DB ===================== */
@@ -34,29 +33,22 @@ cloudinary.config({
 const app = express();
 
 /* ===================== TRUST PROXY ===================== */
-/* REQUIRED for Render / Nginx / HTTPS */
 app.set("trust proxy", 1);
 
-/* ===================== CORS (FIRST) ===================== */
+/* ===================== CORS (SIMPLE & SAFE) ===================== */
 const allowedOrigins = [
   "https://custom-snippets-app.netlify.app",
   "http://localhost:5173",
 ];
 
-const corsOptions: cors.CorsOptions = {
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, origin);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-};
-
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: allowedOrigins, // ✅ NO callback
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+  }),
+);
 
 /* ===================== PREFLIGHT ===================== */
 app.options("*", cors());
@@ -73,7 +65,7 @@ app.use(
     name: "session",
     maxAge: Number(process.env.COOKIE_TIME || 7) * 24 * 60 * 60 * 1000,
     keys: [process.env.COOKIE_SECRET as string],
-    secure: process.env.NODE_ENV === "production",
+    secure: true, // Render is HTTPS
     sameSite: "none",
     httpOnly: true,
   }),

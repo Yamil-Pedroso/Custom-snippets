@@ -1,10 +1,11 @@
 import axios from "axios";
-axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "https://custom-snippets.onrender.com/api/v1";
-//axios.defaults.baseURL = "http://localhost:3010/api/v1";
 
-// Interceptor para incluir el token en cada solicitud
-axios.interceptors.request.use((config) => {
+const api = axios.create({
+  baseURL: "https://custom-snippets.onrender.com/api/v1",
+  withCredentials: true,
+});
+
+api.interceptors.request.use((config) => {
   const token = localStorage.getItem("authToken");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -12,4 +13,4 @@ axios.interceptors.request.use((config) => {
   return config;
 });
 
-export default axios;
+export default api;
