@@ -4,10 +4,12 @@ import { body, validationResult } from "express-validator";
 //import { sampleComponents } from "../data/components";
 
 interface UserRequest extends Request {
-  user?: any;
+  user?: {
+    id: string;
+  };
 }
 
-export const getComponents = async (req: Request, res: Response) => {
+export const getComponents = async (req: UserRequest, res: Response) => {
   try {
     const components = await Component.find({
       $or: [{ userId: req.user?.id }, { isPublic: true }],
@@ -50,7 +52,7 @@ export const getUserComponents = async (req: UserRequest, res: Response) => {
 
 export const createComponent = async (
   req: UserRequest,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   const { name, description, codeSnippet, tags, category, isPublic } = req.body;
 
@@ -88,8 +90,8 @@ export const validateCreateComponent = [
 ];
 
 export const updateComponent = async (
-  req: Request,
-  res: Response
+  req: UserRequest,
+  res: Response,
 ): Promise<void> => {
   const { id } = req.params;
 
@@ -97,7 +99,7 @@ export const updateComponent = async (
     const updatedComponent = await Component.findOneAndUpdate(
       { _id: id, userId: req.user?.id }, // Solo actualizar si el componente pertenece al usuario
       req.body, // Actualizar con los datos del cuerpo de la solicitud
-      { new: true } // Devolver el componente actualizado
+      { new: true }, // Devolver el componente actualizado
     );
 
     if (!updatedComponent) {
@@ -112,8 +114,8 @@ export const updateComponent = async (
 };
 
 export const deleteComponent = async (
-  req: Request,
-  res: Response
+  req: UserRequest,
+  res: Response,
 ): Promise<void> => {
   const { id } = req.params;
 
@@ -156,7 +158,7 @@ export const searchComponents = async (req: UserRequest, res: Response) => {
 
 export const toggleComponentVisibility = async (
   req: UserRequest,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   const { id } = req.params;
   const { isPublic } = req.body;
@@ -197,7 +199,7 @@ export const toggleComponentVisibility = async (
 
 export const getComponentsByCategory = async (
   req: UserRequest,
-  res: Response
+  res: Response,
 ) => {
   const { category } = req.params;
 

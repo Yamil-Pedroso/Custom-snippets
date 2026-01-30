@@ -2,7 +2,6 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: "https://custom-snippets.onrender.com/api/v1",
-  withCredentials: true,
 });
 
 api.interceptors.request.use((config) => {

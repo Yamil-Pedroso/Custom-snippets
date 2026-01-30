@@ -5,10 +5,16 @@ import CustomError from "../utils/customError";
 import { v2 as cloudinary } from "cloudinary";
 import bcrypt from "bcryptjs";
 
+interface UserRequest extends Request {
+  user?: {
+    id: string;
+  };
+}
+
 export const registerUser = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const { username, email, password, isAdmin } = req.body;
@@ -35,7 +41,7 @@ export const registerUser = async (
             if (error)
               return reject(new CustomError("Error uploading avatar", 500));
             if (result) return resolve(result.secure_url);
-          }
+          },
         );
         stream.end(req.file?.buffer);
       });
@@ -80,16 +86,16 @@ export const loginUser = async (req: any, res: any, next: NextFunction) => {
   }
 };
 
-export const getCurrentUser = async (req: Request, res: Response) => {
-  const user = await User.findById(req.user.id).select("-password"); // No devolver la contraseña
+export const getCurrentUser = async (req: UserRequest, res: Response) => {
+  const user = await User.findById(req.user?.id).select("-password"); // No devolver la contraseña
   res.status(200).json(user);
 };
 
 // Logout user
 export const logoutUser = async (
-  req: Request,
+  req: UserRequest,
   res: any,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     if (!req.user) {
@@ -153,7 +159,7 @@ export const logoutUser = async (
 export const uploadAvatar = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const { path } = req.file as any;
   try {
